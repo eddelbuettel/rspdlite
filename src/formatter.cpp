@@ -1,6 +1,4 @@
 
-// [[Rcpp::interfaces(r, cpp)]]
-
 #include <Rcpp/Lighter>
 #include <spdlite/logger.h>
 

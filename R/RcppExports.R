@@ -33,7 +33,3 @@ formatter <- function(s, v) {
     .Call(`_rspdlite_formatter`, s, v)
 }
 
-# Register entry points for exported C++ functions
-methods::setLoadAction(function(ns) {
-    .Call(`_rspdlite_RcppExport_registerCCallable`)
-})
