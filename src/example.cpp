@@ -4,47 +4,42 @@
 //#include <spdlite/sinks/color_sink.h>
 
 namespace spdlite {
-
-  struct r_sink {
-    explicit r_sink() {}
-    void write(const log_msg &msg) { Rcpp::Rcout << std::string_view(msg.formatted.data(), msg.formatted.size()); }
-    void flush() { Rcpp::Rcout << std::flush; }
-  };
-  
+    struct r_sink {
+        explicit r_sink() {}
+        void write(const log_msg &msg) { Rcpp::Rcout << std::string_view(msg.formatted.data(), msg.formatted.size()); }
+        void flush() { Rcpp::Rcout << std::flush; }
+    };
 }
 
-static spdlite::logger_st console("ex", spdlite::r_sink{}); //spdlite::console_sink{});
+static spdlite::logger_st console("", spdlite::r_sink{}); //spdlite::console_sink{});
 
 using namespace spdlite;
 
 namespace spdl {
-  template <typename... Args>
-  void trace(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
-    console.log(level::trace, fmt, std::forward<Args>(args)...);
-  }
-  template <typename... Args>
-  void debug(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
-    console.log(level::debug, fmt, std::forward<Args>(args)...);
-  }
-  template <typename... Args>
-  void info(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
-    console.log(level::info, fmt, std::forward<Args>(args)...);
-  }
-  template <typename... Args>
-  void warn(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
-    console.log(level::warn, fmt, std::forward<Args>(args)...);
-  }
-  template <typename... Args>
-  void error(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
-    console.log(level::err, fmt, std::forward<Args>(args)...);
-  }
-  template <typename... Args>
-  void critical(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
-    console.log(level::critical, fmt, std::forward<Args>(args)...);
-  }
-
-  //private:
-  //spdlite::logger_st console("", spdlite::r_sink{});
+    template <typename... Args>
+    void trace(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::trace, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    void debug(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::debug, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    void info(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::info, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    void warn(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::warn, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    void error(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::err, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    void critical(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::critical, fmt, std::forward<Args>(args)...);
+    }
 };
 
 //' spdlite Example using a sink for R
