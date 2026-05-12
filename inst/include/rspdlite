@@ -1,7 +1,10 @@
 // -*- mode: c++; -*-
 
-#include <Rcpp/Lighter>         // for Rcpp
-#include <spdlite/logger.h>     // for splite
+#include <Rcpp/Lighter>         		// for Rcpp
+#include <spdlite/logger.h>     		// for spdlite
+#if defined(RSPDLITE_NULL_SINK)
+#include <spdlite/sinks/null_sink.h>      	// for null_sink, if used
+#endif
 
 // Very minimal sink for
 namespace spdlite {
@@ -18,7 +21,11 @@ namespace spdlite {
 
 // Anonymous namespace makes it file-local
 namespace {
-    spdlite::logger_st console("", spdlite::r_sink{}); // instead of, say, spdlite::console_sink{});
+    #if defined(RSPDLITE_NULL_SINK)
+        spdlite::logger_st console("", spdlite::null_sink{});
+    #else
+        spdlite::logger_st console("", spdlite::r_sink{}); // instead of eg spdlite::console_sink{});
+    #endif
 }
 
 namespace spdl {
