@@ -31,10 +31,98 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// trace_
+void trace_(std::string s);
+RcppExport SEXP _rspdlite_trace_(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type s(sSEXP);
+    trace_(s);
+    return R_NilValue;
+END_RCPP
+}
+// debug_
+void debug_(std::string s);
+RcppExport SEXP _rspdlite_debug_(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type s(sSEXP);
+    debug_(s);
+    return R_NilValue;
+END_RCPP
+}
+// info_
+void info_(std::string s);
+RcppExport SEXP _rspdlite_info_(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type s(sSEXP);
+    info_(s);
+    return R_NilValue;
+END_RCPP
+}
+// warn_
+void warn_(std::string s);
+RcppExport SEXP _rspdlite_warn_(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type s(sSEXP);
+    warn_(s);
+    return R_NilValue;
+END_RCPP
+}
+// error_
+void error_(std::string s);
+RcppExport SEXP _rspdlite_error_(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type s(sSEXP);
+    error_(s);
+    return R_NilValue;
+END_RCPP
+}
+// critical_
+void critical_(std::string s);
+RcppExport SEXP _rspdlite_critical_(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type s(sSEXP);
+    critical_(s);
+    return R_NilValue;
+END_RCPP
+}
+// set_level_
+void set_level_(std::string s);
+RcppExport SEXP _rspdlite_set_level_(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type s(sSEXP);
+    set_level_(s);
+    return R_NilValue;
+END_RCPP
+}
+// get_level_
+std::string get_level_();
+RcppExport SEXP _rspdlite_get_level_() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(get_level_());
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rspdlite_exampleRsink", (DL_FUNC) &_rspdlite_exampleRsink, 0},
     {"_rspdlite_formatter", (DL_FUNC) &_rspdlite_formatter, 2},
+    {"_rspdlite_trace_", (DL_FUNC) &_rspdlite_trace_, 1},
+    {"_rspdlite_debug_", (DL_FUNC) &_rspdlite_debug_, 1},
+    {"_rspdlite_info_", (DL_FUNC) &_rspdlite_info_, 1},
+    {"_rspdlite_warn_", (DL_FUNC) &_rspdlite_warn_, 1},
+    {"_rspdlite_error_", (DL_FUNC) &_rspdlite_error_, 1},
+    {"_rspdlite_critical_", (DL_FUNC) &_rspdlite_critical_, 1},
+    {"_rspdlite_set_level_", (DL_FUNC) &_rspdlite_set_level_, 1},
+    {"_rspdlite_get_level_", (DL_FUNC) &_rspdlite_get_level_, 0},
     {NULL, NULL, 0}
 };
 

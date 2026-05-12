@@ -1,0 +1,9 @@
+.*\.tar\.gz
+^\.travis\.yml$
+^\.editorconfig$
+^docs
+^\.github$
+.venv_altdoc
+^docs$
+^altdoc$
+^local

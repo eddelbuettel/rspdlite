@@ -1,3 +1,10 @@
 useDynLib(rspdlite, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
-exportPattern("^[[:alpha:]]+")
+#exportPattern("^[[:alpha:]]+")
+export(set_level,
+       trace,
+       debug,
+       info,
+       warn,
+       error,
+       critical)

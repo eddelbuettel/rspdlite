@@ -1,6 +1,5 @@
 
-#include <Rcpp/Lighter>
-#include <spdlite/logger.h>
+#include <rspdlite>
 
 constexpr int max_args = 15;            // Arbitrary but 'smallish'
 
@@ -48,3 +47,27 @@ std::string formatter(const std::string s, std::vector<std::string> v) {
         Rcpp::warning("Only up to " + std::to_string(max_args) + " arguments support for now.");
     return forward_to_format(s, v);
 }
+
+// [[Rcpp::export]]
+void trace_(std::string s) { console.trace(std::string_view(s)); }
+
+// [[Rcpp::export]]
+void debug_(std::string s) { console.debug(std::string_view(s)); }
+
+// [[Rcpp::export]]
+void info_(std::string s) { console.info(std::string_view(s)); }
+
+// [[Rcpp::export]]
+void warn_(std::string s) { console.warn(std::string_view(s)); }
+
+// [[Rcpp::export]]
+void error_(std::string s) { console.error(std::string_view(s)); }
+
+// [[Rcpp::export]]
+void critical_(std::string s) { console.critical(std::string_view(s)); }
+
+// [[Rcpp::export]]
+void set_level_(std::string s) { console.log_level(spdl::stringToEnum(s)); }
+
+// [[Rcpp::export]]
+std::string get_level_() { return spdl::levelToString(console.log_level()); }

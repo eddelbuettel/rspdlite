@@ -7,8 +7,6 @@
 #' stopwatch feature. For more features see the 'spdlog' documnetation.
 #'
 #' @return None
-#' @examples
-#' exampleRsink()
 exampleRsink <- function() {
     invisible(.Call(`_rspdlite_exampleRsink`))
 }
@@ -31,5 +29,37 @@ exampleRsink <- function() {
 #' @seealso https://github.com/fmtlib/fmt
 formatter <- function(s, v) {
     .Call(`_rspdlite_formatter`, s, v)
+}
+
+trace_ <- function(s) {
+    invisible(.Call(`_rspdlite_trace_`, s))
+}
+
+debug_ <- function(s) {
+    invisible(.Call(`_rspdlite_debug_`, s))
+}
+
+info_ <- function(s) {
+    invisible(.Call(`_rspdlite_info_`, s))
+}
+
+warn_ <- function(s) {
+    invisible(.Call(`_rspdlite_warn_`, s))
+}
+
+error_ <- function(s) {
+    invisible(.Call(`_rspdlite_error_`, s))
+}
+
+critical_ <- function(s) {
+    invisible(.Call(`_rspdlite_critical_`, s))
+}
+
+set_level_ <- function(s) {
+    invisible(.Call(`_rspdlite_set_level_`, s))
+}
+
+get_level_ <- function() {
+    .Call(`_rspdlite_get_level_`)
 }
 
