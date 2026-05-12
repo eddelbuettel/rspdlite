@@ -1,4 +1,3 @@
-#define RSPDLITE_NULL_SINK
 #include <rspdlite>
 
 //' spdlite Example using a sink for R
