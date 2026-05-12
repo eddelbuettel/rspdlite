@@ -1,0 +1,81 @@
+// -*- mode: c++; -*-
+
+#include <Rcpp/Lighter>         // for Rcpp
+#include <spdlite/logger.h>     // for splite
+
+// Very minimal sink for
+namespace spdlite {
+    struct r_sink {
+        explicit r_sink() {}
+        void write(const log_msg &msg) {
+            Rcpp::Rcout << std::string_view(msg.formatted.data(), msg.formatted.size());
+        }
+        void flush() {
+            Rcpp::Rcout << std::flush;
+        }
+    };
+}
+
+// Anonymous namespace makes it file-local
+namespace {
+    spdlite::logger_st console("", spdlite::r_sink{}); // instead of, say, spdlite::console_sink{});
+}
+
+namespace spdl {
+    using namespace spdlite;
+
+    template <typename... Args>
+    inline void trace(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::trace, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    inline void debug(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::debug, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    inline void info(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::info, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    inline void warn(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::warn, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    inline void error(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::err, fmt, std::forward<Args>(args)...);
+    }
+    template <typename... Args>
+    inline void critical(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+        console.log(level::critical, fmt, std::forward<Args>(args)...);
+    }
+
+    inline void level(level lvl) { console.log_level(lvl); }
+
+    inline spdlite::level level() { return console.log_level(); }
+
+    inline const char* levelToString(spdlite::level lvl) {
+        static constexpr std::array<const char*, 8> names = {
+            "trace", "debug", "info", "warn", "error", "critical", "off", "n_levels"
+        };
+        return names[static_cast<size_t>(lvl)];
+    }
+
+    inline spdlite::level stringToEnum(const std::string& str) {
+        static const std::unordered_map<std::string, spdlite::level> levelMap = {
+            {"trace",    level::trace},
+            {"debug",    level::debug},
+            {"info",     level::info},
+            {"warn",     level::warn},
+            {"error",    level::err},
+            {"critical", level::critical},
+            {"off",      level::off},
+            {"n_levels", level::n_levels}
+        };
+        auto it = levelMap.find(str);
+        if (it != levelMap.end()) {
+            return it->second;
+        }
+        Rcpp::stop("Unknown level ", str);
+        return level::n_levels; // not reached
+   }
+}
