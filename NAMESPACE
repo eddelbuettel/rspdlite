@@ -1,7 +1,7 @@
 useDynLib(rspdlite, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
-#exportPattern("^[[:alpha:]]+")
 export(set_level,
+       get_level,
        trace,
        debug,
        info,
