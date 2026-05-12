@@ -21,7 +21,7 @@ namespace rspdlite {
     };
 }
 
-// Anonymous namespace makes it file-local
+// Anonymous namespace is a preferred alternative to 'static'
 namespace {
     #if defined(RSPDLITE_NULL_SINK)
         spdlite::logger_st console("", spdlite::null_sink{}); // select null sink

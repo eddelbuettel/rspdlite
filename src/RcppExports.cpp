@@ -10,12 +10,21 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// exampleRsink
-void exampleRsink();
-RcppExport SEXP _rspdlite_exampleRsink() {
+// example1
+void example1();
+RcppExport SEXP _rspdlite_example1() {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
-    exampleRsink();
+    example1();
+    return R_NilValue;
+END_RCPP
+}
+// example2
+void example2();
+RcppExport SEXP _rspdlite_example2() {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    example2();
     return R_NilValue;
 END_RCPP
 }
@@ -113,7 +122,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rspdlite_exampleRsink", (DL_FUNC) &_rspdlite_exampleRsink, 0},
+    {"_rspdlite_example1", (DL_FUNC) &_rspdlite_example1, 0},
+    {"_rspdlite_example2", (DL_FUNC) &_rspdlite_example2, 0},
     {"_rspdlite_formatter", (DL_FUNC) &_rspdlite_formatter, 2},
     {"_rspdlite_trace_", (DL_FUNC) &_rspdlite_trace_, 1},
     {"_rspdlite_debug_", (DL_FUNC) &_rspdlite_debug_, 1},

@@ -3,11 +3,16 @@
 
 #' spdlite Example using a sink for R
 #'
-#' A simple example invoking a derived R/Rcpp logger.
+#' A simple example invoking a logger from C++. It can interact with logging from R.
 #'
 #' @return None
-exampleRsink <- function() {
-    invisible(.Call(`_rspdlite_exampleRsink`))
+example1 <- function() {
+    invisible(.Call(`_rspdlite_example1`))
+}
+
+#' @rdname example1
+example2 <- function() {
+    invisible(.Call(`_rspdlite_example2`))
 }
 
 #' Simple Pass-Through Formatter to \code{fmt::format()}
