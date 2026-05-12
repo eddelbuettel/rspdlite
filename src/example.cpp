@@ -2,7 +2,7 @@
 
 //' spdlite Example using a sink for R
 //'
-//' A simple example invoking a derived R/Rcpp logger.
+//' A simple example invoking a logger from C++. It can interact with logging from R.
 //'
 //' @return None
 // [[Rcpp::export]]
@@ -17,24 +17,24 @@ void exampleRsink() {
     console.info("Positional args are {1} {0}..", "too", "supported");
     console.info("{:<30}", "left aligned");
 
-    spdl::level(spdlite::level::warn);
+    rspdlite::level(spdlite::level::warn);
 
     // Or via the spdl namespace (s)
-    spdl::info("Some more");
-    spdl::error("Some error message with arg: {}", 1);
-    spdl::warn("Easy padding in numbers like {:08d}", 12);
-    spdl::critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
-    spdl::info("Support for floats {:03.2f}", 1.23456);
-    spdl::info("Positional args are {1} {0}..", "too", "supported");
-    spdl::info("{:<30}", "left aligned");
+    rspdlite::info("Some more");
+    rspdlite::error("Some error message with arg: {}", 1);
+    rspdlite::warn("Easy padding in numbers like {:08d}", 12);
+    rspdlite::critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
+    rspdlite::info("Support for floats {:03.2f}", 1.23456);
+    rspdlite::info("Positional args are {1} {0}..", "too", "supported");
+    rspdlite::info("{:<30}", "left aligned");
 
-    spdl::level(spdlite::level::info);
+    rspdlite::level(spdlite::level::info);
     // Or via the spdl namespace (s)
-    spdl::info("Some more");
-    spdl::error("Some error message with arg: {}", 1);
-    spdl::warn("Easy padding in numbers like {:08d}", 12);
-    spdl::critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
-    spdl::info("Support for floats {:03.2f}", 1.23456);
-    spdl::info("Positional args are {1} {0}..", "too", "supported");
-    spdl::info("{:<30}", "left aligned");
+    rspdlite::info("Some more");
+    rspdlite::error("Some error message with arg: {}", 1);
+    rspdlite::warn("Easy padding in numbers like {:08d}", 12);
+    rspdlite::critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
+    rspdlite::info("Support for floats {:03.2f}", 1.23456);
+    rspdlite::info("Positional args are {1} {0}..", "too", "supported");
+    rspdlite::info("{:<30}", "left aligned");
 }

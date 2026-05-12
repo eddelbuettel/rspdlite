@@ -67,7 +67,7 @@ void error_(std::string s) { console.error(std::string_view(s)); }
 void critical_(std::string s) { console.critical(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void set_level_(std::string s) { console.log_level(spdl::stringToEnum(s)); }
+void set_level_(std::string s) { console.log_level(rspdlite::stringToEnum(s)); }
 
 // [[Rcpp::export]]
-std::string get_level_() { return spdl::levelToString(console.log_level()); }
+std::string get_level_() { return rspdlite::levelToString(console.log_level()); }

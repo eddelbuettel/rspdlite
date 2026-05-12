@@ -6,8 +6,10 @@
 #include <spdlite/sinks/null_sink.h>      	// for null_sink, if used
 #endif
 
-// Very minimal sink for
-namespace spdlite {
+// Very minimal sink for R, in the rspdlite namespace of the package
+namespace rspdlite {
+    using namespace spdlite;
+
     struct r_sink {
         explicit r_sink() {}
         void write(const log_msg &msg) {
@@ -22,13 +24,14 @@ namespace spdlite {
 // Anonymous namespace makes it file-local
 namespace {
     #if defined(RSPDLITE_NULL_SINK)
-        spdlite::logger_st console("", spdlite::null_sink{});
+        spdlite::logger_st console("", spdlite::null_sink{}); // select null sink
+        console.log_level(spdlite::level::off);               // and turn it off
     #else
-        spdlite::logger_st console("", spdlite::r_sink{}); // instead of eg spdlite::console_sink{});
+        spdlite::logger_st console("", rspdlite::r_sink{}); // instead of eg spdlite::console_sink{});
     #endif
 }
 
-namespace spdl {
+namespace rspdlite {
     using namespace spdlite;
 
     template <typename... Args>
@@ -58,17 +61,17 @@ namespace spdl {
 
     inline void level(level lvl) { console.log_level(lvl); }
 
-    inline spdlite::level level() { return console.log_level(); }
+    inline enum level level() { return console.log_level(); }
 
-    inline const char* levelToString(spdlite::level lvl) {
+    inline const char* levelToString(enum level lvl) {
         static constexpr std::array<const char*, 8> names = {
             "trace", "debug", "info", "warn", "error", "critical", "off", "n_levels"
         };
         return names[static_cast<size_t>(lvl)];
     }
 
-    inline spdlite::level stringToEnum(const std::string& str) {
-        static const std::unordered_map<std::string, spdlite::level> levelMap = {
+    inline enum level stringToEnum(const std::string& str) {
+        static const std::unordered_map<std::string, enum level> levelMap = {
             {"trace",    level::trace},
             {"debug",    level::debug},
             {"info",     level::info},
