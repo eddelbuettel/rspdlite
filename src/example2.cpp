@@ -4,6 +4,8 @@
 // [[Rcpp::export]]
 void example2() {
     // set level to warn
+
+    rspdlite::critical("-- level to warn");
     rspdlite::level(spdlite::level::warn);
 
     rspdlite::info("Some more");
@@ -15,6 +17,7 @@ void example2() {
     rspdlite::info("{:<30}", "left aligned");
 
     // set level to info
+    rspdlite::critical("-- level to info");
     rspdlite::level(spdlite::level::info);
 
     rspdlite::info("Some more");
