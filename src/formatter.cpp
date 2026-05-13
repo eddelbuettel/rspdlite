@@ -49,25 +49,25 @@ std::string formatter(const std::string s, std::vector<std::string> v) {
 }
 
 // [[Rcpp::export]]
-void trace_(std::string s) { console.trace(std::string_view(s)); }
+void trace_(std::string s) { rspdlite::console.trace(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void debug_(std::string s) { console.debug(std::string_view(s)); }
+void debug_(std::string s) { rspdlite::console.debug(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void info_(std::string s) { console.info(std::string_view(s)); }
+void info_(std::string s) { rspdlite::console.info(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void warn_(std::string s) { console.warn(std::string_view(s)); }
+void warn_(std::string s) { rspdlite::console.warn(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void error_(std::string s) { console.error(std::string_view(s)); }
+void error_(std::string s) { rspdlite::console.error(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void critical_(std::string s) { console.critical(std::string_view(s)); }
+void critical_(std::string s) { rspdlite::console.critical(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void set_level_(std::string s) { console.log_level(rspdlite::stringToEnum(s)); }
+void set_level_(std::string s) { rspdlite::console.log_level(rspdlite::stringToEnum(s)); }
 
 // [[Rcpp::export]]
-std::string get_level_() { return rspdlite::levelToString(console.log_level()); }
+std::string get_level_() { return rspdlite::levelToString(rspdlite::console.log_level()); }

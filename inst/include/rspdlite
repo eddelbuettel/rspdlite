@@ -8,6 +8,7 @@
 
 // Very minimal sink for R, in the rspdlite namespace of the package
 namespace rspdlite {
+
     using namespace spdlite;
 
     struct r_sink {
@@ -19,43 +20,36 @@ namespace rspdlite {
             Rcpp::Rcout << std::flush;
         }
     };
-}
 
-// Anonymous namespace is a preferred alternative to 'static'
-namespace {
-    #if defined(RSPDLITE_NULL_SINK)
-        spdlite::logger_st console("", spdlite::null_sink{}); // select null sink
-        console.log_level(spdlite::level::off);               // and turn it off
-    #else
-        spdlite::logger_st console("", rspdlite::r_sink{}); // instead of eg spdlite::console_sink{});
-    #endif
-}
-
-namespace rspdlite {
-    using namespace spdlite;
+#if defined(RSPDLITE_NULL_SINK)
+    inline spdlite::logger_st console("", spdlite::null_sink{}); // select null sink
+    console.log_level(spdlite::level::off);               // and turn it off
+#else
+    inline spdlite::logger_st console("", rspdlite::r_sink{}); // instead of spdlite::console_sink{});
+#endif
 
     template <typename... Args>
-    inline void trace(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+    inline void trace(format_string_t<Args...> fmt, Args&&... args) {
         console.log(level::trace, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void debug(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+    inline void debug(format_string_t<Args...> fmt, Args&&... args) {
         console.log(level::debug, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void info(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+    inline void info(format_string_t<Args...> fmt, Args&&... args) {
         console.log(level::info, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void warn(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+    inline void warn(format_string_t<Args...> fmt, Args&&... args) {
         console.log(level::warn, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void error(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+    inline void error(format_string_t<Args...> fmt, Args&&... args) {
         console.log(level::err, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void critical(format_string_t<Args...> fmt, Args&&... args) /*const noexcept*/ {
+    inline void critical(format_string_t<Args...> fmt, Args&&... args) {
         console.log(level::critical, fmt, std::forward<Args>(args)...);
     }
 
