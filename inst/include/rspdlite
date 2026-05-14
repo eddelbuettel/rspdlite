@@ -23,7 +23,6 @@ namespace rspdlite {
 
 #if defined(RSPDLITE_NULL_SINK)
     inline spdlite::logger_st console("", spdlite::null_sink{}); // select null sink
-    console.log_level(spdlite::level::off);               // and turn it off
 #else
     inline spdlite::logger_st console("", rspdlite::r_sink{}); // instead of spdlite::console_sink{});
 #endif

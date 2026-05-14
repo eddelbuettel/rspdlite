@@ -28,3 +28,23 @@ void example2() {
     rspdlite::info("Positional args are {1} {0}..", "too", "supported");
     rspdlite::info("{:<30}", "left aligned");
 }
+
+/*** R
+example2()
+*/
+
+// One can run this example from R quite easily via Rcpp:
+//
+// Sys.setenv(PKG_CPPFLAGS=paste0("-std=c++20 -I", system.file("include", package="rspdlite")))
+// Rcpp::sourceCpp( system.file("examples", "example2.cpp", package="rspdlite") )
+//
+// which should build it on any suitable platform, and also run the example.
+//
+//
+// One can then show that setting a 'null logger' suppressed the output by adding the define:
+//
+// Sys.setenv(PKG_CPPFLAGS=paste0("-std=c++20 -DRSPDLITE_NULL_SINK ",
+//                                "-I", system.file("include", package="rspdlite")))
+// Rcpp::sourceCpp( system.file("examples", "example2.cpp", package="rspdlite"), rebuild=TRUE )
+//
+// where the rebuild=TRUE flag forces a recompilation under the added define.
