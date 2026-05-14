@@ -5,6 +5,9 @@
 #if defined(RSPDLITE_NULL_SINK)
 #include <spdlite/sinks/null_sink.h>      	// for null_sink, if used
 #endif
+#if defined(RSPDLITE_FILE_SINK)
+#include <spdlite/sinks/file_sink.h>      	// for file_sink, if used
+#endif
 
 // Very minimal sink for R, in the rspdlite namespace of the package
 namespace rspdlite {
@@ -23,6 +26,12 @@ namespace rspdlite {
 
 #if defined(RSPDLITE_NULL_SINK)
     inline spdlite::logger_st console("", spdlite::null_sink{}); // select null sink
+#elif defined(RSPDLITE_FILE_SINK)
+    // double quoting trick to get content instead of macro when quoting macro for filename
+    #define Q(x) #x
+    #define QUOTE(x) Q(x)
+    constexpr char* filename = QUOTE(RSPDLITE_FILE_SINK);
+    inline spdlite::logger_st console("", spdlite::file_sink{filename, true});
 #else
     inline spdlite::logger_st console("", rspdlite::r_sink{}); // instead of spdlite::console_sink{});
 #endif
