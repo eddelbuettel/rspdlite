@@ -10,9 +10,10 @@ Authors@R: c(person("Dirk", "Eddelbuettel", role = c("aut", "cre"), email = "edd
              person("Victor", "Zverovic", role = "aut", comment = "Author of fmt"))
 Description: The lightweight header-only C++-20 logging library 'spdlite', a lighter version
  of 'spdlog' and also written by Gabi Melman, provides most of the features of the larger
- version, and also includes 'fmt' as fallback if 'std::format' is not selected. 
+ version, and also includes 'fmt' as fallback if 'std::format' is not selected.
 URL: https://github.com/eddelbuettel/rspdlite
 BugReports: https://github.com/eddelbuettel/rspdlite/issues
 LinkingTo: Rcpp
 Imports: Rcpp
+Suggests: tinytest
 RoxygenNote: 6.0.1
