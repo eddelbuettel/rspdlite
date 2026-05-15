@@ -1,0 +1,42 @@
+#!/bin/sh
+
+set -u
+
+## Check that we are on Unix
+if ! [ -x $(command -v uname) ]; then
+    echo "You do not have 'uname' so this is unlikely to be a Unix system. Exiting."
+    exit 1
+fi
+
+: ${R_HOME=$(R RHOME)}
+sysname=$(uname)
+arch=$(uname -m)
+osname=$(${R_HOME}/bin/Rscript -e 'cat(R.version$os)')
+echo "** configuring for ${sysname} on ${arch} and ${osname}"
+
+## Switch to /tmp and test-compile a C++20 file with std::format
+cwd=$(pwd)
+cd /tmp
+
+echo "#include <format>
+#include <iostream>
+
+int main(void) {
+    std::cout << std::format(\"The answer is {}.\", 42) << std::endl;
+}
+" > fmttest$$.cpp
+
+PKG_CXXFLAGS="--std=c++20" ${R_HOME}/bin/R CMD COMPILE fmttest$$.cpp >/dev/null 2>&1
+res=$?
+
+## Clean up and return
+rm -f fmttest$$.*
+cd ${cwd}
+
+if [ "${res}" -eq 0 ]; then
+   echo "** checking for C++20 and std::format: good"
+   sed -e 's|@CXX_STD@|CXX_STD=CXX20|' src/Makevars.in > src/Makevars
+else
+   echo "** checking for C++20 and std::format: insufficient, using C++17"
+   sed -e 's|@CXX_STD@|CXX_STD=CXX17|' src/Makevars.in > src/Makevars
+fi
