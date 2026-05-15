@@ -1,5 +1,12 @@
 suppressMessages(library(rspdlite))
 
+
+if (Sys.info()[["sysname"]] != "Linux") {
+    exit_file("Skipping remainder")
+}
+
+expect_equal(rspdlite::get_level(), "info")
+
 ## default level is info so these two are silent
 expect_equal(rspdlite::get_level(), "info")
 expect_silent(rspdlite::trace("abc"))

@@ -76,8 +76,10 @@ std::string get_level_() { return rspdlite::levelToString(rspdlite::console.log_
 
 #else
 
+#include <Rcpp/Lighter>
+
 // Either insufficient C++20, or C++17 or older so no rspdlite for us
-inline void function badCpp() { Rcpp::message("Insufficient compiler. Sorry."); }
+inline void badCpp() { Rcpp::message(Rcpp::wrap("Insufficient compiler. Sorry.")); }
 
 // [[Rcpp::export]]
 std::string formatter(const std::string s, std::vector<std::string> v) {
@@ -89,27 +91,24 @@ std::string formatter(const std::string s, std::vector<std::string> v) {
 void trace_(std::string s) { badCpp(); }
 
 // [[Rcpp::export]]
-void debug_(std::string s) { }
+void debug_(std::string s) { badCpp(); }
 
 // [[Rcpp::export]]
-void info_(std::string s) { }
+void info_(std::string s) { badCpp(); }
 
 // [[Rcpp::export]]
-void warn_(std::string s) { }
+void warn_(std::string s) { badCpp(); }
 
 // [[Rcpp::export]]
-void error_(std::string s) { }
+void error_(std::string s) { badCpp(); }
 
 // [[Rcpp::export]]
-void critical_(std::string s) { }
+void critical_(std::string s) { badCpp(); }
 
 // [[Rcpp::export]]
-void set_level_(std::string s) { }
+void set_level_(std::string s) { badCpp(); }
 
 // [[Rcpp::export]]
-std::string get_level_() { }
-
-
-
+std::string get_level_() { return std::string("info"); }
 
 #endif
