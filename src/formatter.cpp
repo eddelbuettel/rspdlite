@@ -1,4 +1,6 @@
 
+#if  __cplusplus >= 202002L
+
 #include <rspdlite>
 
 constexpr int max_args = 15;            // Arbitrary but 'smallish'
@@ -71,3 +73,43 @@ void set_level_(std::string s) { rspdlite::console.log_level(rspdlite::stringToE
 
 // [[Rcpp::export]]
 std::string get_level_() { return rspdlite::levelToString(rspdlite::console.log_level()); }
+
+#else
+
+// Either insufficient C++20, or C++17 or older so no rspdlite for us
+inline void function badCpp() { Rcpp::message("Insufficient compiler. Sorry."); }
+
+// [[Rcpp::export]]
+std::string formatter(const std::string s, std::vector<std::string> v) {
+    badCpp();
+    return s + v[0];
+}
+
+// [[Rcpp::export]]
+void trace_(std::string s) { badCpp(); }
+
+// [[Rcpp::export]]
+void debug_(std::string s) { }
+
+// [[Rcpp::export]]
+void info_(std::string s) { }
+
+// [[Rcpp::export]]
+void warn_(std::string s) { }
+
+// [[Rcpp::export]]
+void error_(std::string s) { }
+
+// [[Rcpp::export]]
+void critical_(std::string s) { }
+
+// [[Rcpp::export]]
+void set_level_(std::string s) { }
+
+// [[Rcpp::export]]
+std::string get_level_() { }
+
+
+
+
+#endif
