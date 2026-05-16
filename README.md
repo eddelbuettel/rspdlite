@@ -96,3 +96,4 @@ offered as a fallback.
 [spdl]: https://github.com/eddelbuettel/spdl
 [spdlite]: https://github.com/gabime/spdlite
 [fmt]: https://github.com/fmtlib/fmt
+[rspdlite]: https://github.com/eddelbuettel/rspdlite
