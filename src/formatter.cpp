@@ -1,4 +1,5 @@
 
+// In order to survive on CRAN, we have to cope with non-C++20 compilation
 #if  __cplusplus >= 202002L
 
 #include <rspdlite>
@@ -10,15 +11,12 @@ std::string forward_to_format(const std::string s,
                               const std::vector<std::string>& v,
                               const Args... args) {
     if (v.size() == sizeof...(args)) {
-#if defined(SPDLOG_USE_STD_FORMAT) && __cplusplus >= 202002L
-        // As of 2026-02 we do _not_ set SPDLOG_USE_STD_FORMAT so this section is unused
+#if defined(SPDLITE_USE_STD_FORMAT) && __cplusplus >= 202002L
         return std::vformat(std::string_view(s), std::make_format_args(args...));
 #elif __cplusplus >= 202002L
-        // This section is now the default under C++20 or later
         return fmt::format(fmt::runtime(s), args...);
 #else
-        // Fallback
-        return fmt::format(s, args...);
+        #error "Compiling spdlite requires C++20"
 #endif
     }
     if constexpr(sizeof...(args) < max_args) {
@@ -26,6 +24,36 @@ std::string forward_to_format(const std::string s,
     }
     return std::string(""); // not reached
 }
+
+#else
+
+#include <Rcpp/Lighter>
+
+constexpr int max_args = 15;            // Arbitrary but 'smallish'
+enum class level : int { off = 0, on = 1, info = 2 };
+
+std::string forward_to_format(const std::string, const std::vector<std::string>&) {
+    Rcpp::message(Rcpp::wrap("No spdlite support without C++20. Sorry."));
+    return std::string("");
+}
+
+namespace rspdlite {
+    enum level stringToEnum(std::string) { return level::info; }
+    std::string levelToString(enum level) { return std::string("info"); }
+    struct dummy_console {
+        void trace(std::string_view) {}
+        void debug(std::string_view) {}
+        void info(std::string_view) {}
+        void warn(std::string_view) {}
+        void error(std::string_view) {}
+        void critical(std::string_view) {}
+        void log_level(enum level) {}
+        enum level log_level() { return level::info; }
+    };
+    dummy_console console;
+}
+
+#endif
 
 //' Simple Pass-Through Formatter to \code{fmt::format()}
 //'
@@ -74,41 +102,44 @@ void set_level_(std::string s) { rspdlite::console.log_level(rspdlite::stringToE
 // [[Rcpp::export]]
 std::string get_level_() { return rspdlite::levelToString(rspdlite::console.log_level()); }
 
-#else
+// #else
 
-#include <Rcpp/Lighter>
+// #include <Rcpp/Lighter>
 
-// Either insufficient C++20, or C++17 or older so no rspdlite for us
-inline void badCpp() { Rcpp::message(Rcpp::wrap("Insufficient compiler. Sorry.")); }
+// // Either insufficient C++20, or C++17 or older so no rspdlite for us
+// inline void badCpp() { Rcpp::message(Rcpp::wrap("Insufficient compiler. Sorry.")); }
+
+// // [[Rcpp::export]]
+// std::string formatter(const std::string s, std::vector<std::string> v) {
+//     badCpp();
+//     return s + v[0];
+// }
+
+// // [[Rcpp::export]]
+// void trace_(std::string s) { badCpp(); }
+
+// // [[Rcpp::export]]
+// void debug_(std::string s) { badCpp(); }
+
+// // [[Rcpp::export]]
+// void info_(std::string s) { badCpp(); }
+
+// // [[Rcpp::export]]
+// void warn_(std::string s) { badCpp(); }
+
+// // [[Rcpp::export]]
+// void error_(std::string s) { badCpp(); }
+
+// // [[Rcpp::export]]
+// void critical_(std::string s) { badCpp(); }
+
+// // [[Rcpp::export]]
+// void set_level_(std::string s) { badCpp(); }
+
+// // [[Rcpp::export]]
+// std::string get_level_() { return std::string("info"); }
+
+// #endif
 
 // [[Rcpp::export]]
-std::string formatter(const std::string s, std::vector<std::string> v) {
-    badCpp();
-    return s + v[0];
-}
-
-// [[Rcpp::export]]
-void trace_(std::string s) { badCpp(); }
-
-// [[Rcpp::export]]
-void debug_(std::string s) { badCpp(); }
-
-// [[Rcpp::export]]
-void info_(std::string s) { badCpp(); }
-
-// [[Rcpp::export]]
-void warn_(std::string s) { badCpp(); }
-
-// [[Rcpp::export]]
-void error_(std::string s) { badCpp(); }
-
-// [[Rcpp::export]]
-void critical_(std::string s) { badCpp(); }
-
-// [[Rcpp::export]]
-void set_level_(std::string s) { badCpp(); }
-
-// [[Rcpp::export]]
-std::string get_level_() { return std::string("info"); }
-
-#endif
+int cppstandard() { return __cplusplus; }

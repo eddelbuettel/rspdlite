@@ -53,3 +53,7 @@ get_level_ <- function() {
     .Call(`_rspdlite_get_level_`)
 }
 
+cppstandard <- function() {
+    .Call(`_rspdlite_cppstandard`)
+}
+

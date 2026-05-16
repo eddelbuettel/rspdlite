@@ -102,6 +102,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cppstandard
+int cppstandard();
+RcppExport SEXP _rspdlite_cppstandard() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(cppstandard());
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rspdlite_formatter", (DL_FUNC) &_rspdlite_formatter, 2},
@@ -113,6 +123,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rspdlite_critical_", (DL_FUNC) &_rspdlite_critical_, 1},
     {"_rspdlite_set_level_", (DL_FUNC) &_rspdlite_set_level_, 1},
     {"_rspdlite_get_level_", (DL_FUNC) &_rspdlite_get_level_, 0},
+    {"_rspdlite_cppstandard", (DL_FUNC) &_rspdlite_cppstandard, 0},
     {NULL, NULL, 0}
 };
 
