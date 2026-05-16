@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 // Copyright (c) 2026, Gabi Melman
 
+// console_sink: colored stdout/stderr output.
+// Win32 SetConsoleTextAttribute on Windows, ANSI escape codes elsewhere.
+
 #pragma once
 
 #include <array>
@@ -21,10 +24,10 @@ enum class color_mode { automatic, always, never };
 
 // ==================== Windows: native console API ====================
 
-#ifndef NOMINMAX
-#define NOMINMAX
-#endif
-#include <windows.h>
+    #ifndef NOMINMAX
+        #define NOMINMAX
+    #endif
+    #include <windows.h>
 
 namespace spdlite {
 
@@ -34,7 +37,8 @@ namespace detail {
 // falls back to WriteFile when output is redirected to a file or color_mode is off.
 struct color_sink_base {
     explicit color_sink_base(HANDLE handle, color_mode mode = color_mode::automatic)
-        : handle_(handle), mode_(mode) {
+        : handle_(handle),
+          mode_(mode) {
         // detect if we're writing to a real console
         DWORD console_mode = 0;
         is_console_ = ::GetConsoleMode(handle_, &console_mode) != 0;
@@ -87,15 +91,14 @@ struct color_sink_base {
             return;
         }
 
-        constexpr std::size_t level_size = 1;
-        auto level_start = msg.logger_name.empty() ? 27 : 27 + msg.logger_name.size() + 3;
-        auto level_end = level_start + level_size;
+        const auto level_start = msg.level_offset;
+        const auto level_end = level_start + level_width;
 
         // before level tag
         write_console_(data, level_start);
         // colored level tag
         ::SetConsoleTextAttribute(handle_, colors_[static_cast<std::size_t>(msg.log_level)]);
-        write_console_(data + level_start, level_size);
+        write_console_(data + level_start, level_width);
         // reset and remainder
         ::SetConsoleTextAttribute(handle_, orig_attribs_);
         write_console_(data + level_end, size - level_end);
@@ -115,9 +118,15 @@ private:
 
     void update_should_color_() noexcept {
         switch (mode_) {
-            case color_mode::always:    should_color_ = true; break;
-            case color_mode::never:     should_color_ = false; break;
-            case color_mode::automatic: should_color_ = is_console_; break;
+            case color_mode::always:
+                should_color_ = true;
+                break;
+            case color_mode::never:
+                should_color_ = false;
+                break;
+            case color_mode::automatic:
+                should_color_ = is_console_;
+                break;
         }
     }
 
@@ -147,9 +156,10 @@ struct console_err_sink : detail::color_sink_base {
 
 // ==================== Linux/macOS: ANSI escape codes ====================
 
-#include <cstdio>
-#include <string_view>
-#include <unistd.h>  // for isatty / fileno
+    #include <unistd.h>  // for isatty / fileno
+
+    #include <cstdio>
+    #include <string_view>
 
 namespace spdlite {
 
@@ -165,11 +175,12 @@ constexpr std::string_view bold_on_red = "\033[1m\033[41m";
 
 namespace detail {
 
-// wraps ANSI escape codes around the 1-char level tag in the formatted output.
+// wraps ANSI escape codes around the level tag (level_width chars) in the formatted output.
 // rebuilds the line into cbuf_ with: [prefix][color][LVL][reset][rest].
 struct color_sink_base {
     explicit color_sink_base(std::FILE *file, color_mode mode = color_mode::automatic)
-        : file_(file), mode_(mode) {
+        : file_(file),
+          mode_(mode) {
         colors_[static_cast<std::size_t>(level::trace)] = ansi_color::white;
         colors_[static_cast<std::size_t>(level::debug)] = ansi_color::cyan;
         colors_[static_cast<std::size_t>(level::info)] = ansi_color::green;
@@ -197,9 +208,8 @@ struct color_sink_base {
         }
 
         auto color = colors_[static_cast<std::size_t>(msg.log_level)];
-        constexpr std::size_t level_size = 1;
-        auto level_start = msg.logger_name.empty() ? 27 : 27 + msg.logger_name.size() + 3;
-        auto level_end = level_start + level_size;
+        const auto level_start = msg.level_offset;
+        const auto level_end = level_start + level_width;
 
         cbuf_.clear();
         cbuf_.append(data, data + level_start);
@@ -210,7 +220,7 @@ struct color_sink_base {
         fwrite_bytes(cbuf_.data(), cbuf_.size(), file_);
     }
 
-    void flush() { std::fflush(file_); }
+    void flush() const { std::fflush(file_); }
 
     void set_color(level lvl, std::string_view color) { colors_[static_cast<std::size_t>(lvl)] = color; }
 
@@ -224,9 +234,15 @@ private:
 
     void update_should_color_() noexcept {
         switch (mode_) {
-            case color_mode::always:    should_color_ = true; break;
-            case color_mode::never:     should_color_ = false; break;
-            case color_mode::automatic: should_color_ = is_tty_; break;
+            case color_mode::always:
+                should_color_ = true;
+                break;
+            case color_mode::never:
+                should_color_ = false;
+                break;
+            case color_mode::automatic:
+                should_color_ = is_tty_;
+                break;
         }
     }
 };
@@ -234,11 +250,13 @@ private:
 }  // namespace detail
 
 struct console_sink : detail::color_sink_base {
-    explicit console_sink(color_mode mode = color_mode::automatic) : color_sink_base(stdout, mode) {}
+    explicit console_sink(color_mode mode = color_mode::automatic)
+        : color_sink_base(stdout, mode) {}
 };
 
 struct console_err_sink : detail::color_sink_base {
-    explicit console_err_sink(color_mode mode = color_mode::automatic) : color_sink_base(stderr, mode) {}
+    explicit console_err_sink(color_mode mode = color_mode::automatic)
+        : color_sink_base(stderr, mode) {}
 };
 
 }  // namespace spdlite
