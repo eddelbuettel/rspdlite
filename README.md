@@ -17,11 +17,13 @@ providing it for R users in package [RcppSpdlog][rcppspdlog] along with the addi
 interface package [spdl][spdl]. For both demanding logging jobs and/or a need for customization,
 these work reliably. Sometimes, however, one desires a smaller, more lightweight and minimalistic
 approach. [spdlite][spdlite] answers to that need. It is a C++20 header-only library which makes
-some deliberate design choices to 'keep things simple'. Configuration is mostly at compile-time,
-though logging levels can of course be adjusted at run-time.  By using an `inline` instance under
-the 'one definition rule', each 'application', or here each R package including the header, gets its
-own instance of the logger (even if the header is included multiple times within a package). A
-simple 'file sink' for logging messages can be selected at compile time.
+some deliberate design choices to 'keep things simple' -- resulting in a logger that is "tiny, fast,
+capable" (to quote the [upstream README][spdlite]).  Configuration is mostly at compile-time, though
+logging levels can of course be adjusted at run-time.  By using an `inline` instance under the 'one
+definition rule', each 'application', or here each R package including the header, gets its own
+instance of the logger (even if the header is included multiple times within a package). As before,
+we provide a distinct 'sink' for R (to route into its output stream).  A simple 'file sink' for
+logging messages can be selected at compile time.
 
 ### Examples
 
