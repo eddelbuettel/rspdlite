@@ -24,17 +24,27 @@ namespace rspdlite {
         }
     };
 
+// double quoting trick to get content instead of macro when quoting macro for filename
+#define Q(x) #x
+#define QUOTE(x) Q(x)
 #if defined(RSPDLITE_NULL_SINK)
-    inline spdlite::logger_st console("", spdlite::null_sink{}); // select null sink
+    inline spdlite::logger_st console(QUOTE(RSPDLITE_LOGGER_NAME), spdlite::null_sink{}); // select null sink
 #elif defined(RSPDLITE_FILE_SINK)
-    // double quoting trick to get content instead of macro when quoting macro for filename
-    #define Q(x) #x
-    #define QUOTE(x) Q(x)
     constexpr char* filename = QUOTE(RSPDLITE_FILE_SINK);
-    inline spdlite::logger_st console("", spdlite::file_sink{filename, true});
+    #if !defined(RSPDLITE_LOGGER_NAME)
+        inline spdlite::logger_st console(spdlite::file_sink{filename, true});
+    #else
+        inline spdlite::logger_st console(QUOTE(RSPDLITE_LOGGER_NAME), spdlite::file_sink{filename, true});
+    #endif
 #else
-    inline spdlite::logger_st console("", rspdlite::r_sink{}); // instead of spdlite::console_sink{});
+    #if !defined(RSPDLITE_LOGGER_NAME)
+       inline spdlite::logger_st console(rspdlite::r_sink{}); // instead of spdlite::console_sink{});
+    #else
+       inline spdlite::logger_st console(QUOTE(RSPDLITE_LOGGER_NAME), rspdlite::r_sink{});
+    #endif
 #endif
+#undef Q
+#undef QUOTE
 
     template <typename... Args>
     inline void trace(format_string_t<Args...> fmt, Args&&... args) {
