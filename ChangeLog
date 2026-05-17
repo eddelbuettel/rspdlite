@@ -1,0 +1,85 @@
+2026-05-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/spdlite: Support optional logger name via #define
+	* README.md: Edits
+
+2026-05-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/formatter.cpp: Enable minimal 'empty' compilation under C++17
+	* inst/tinytest/test_basics.R: Refine, skip most tests under C++17
+	* src/RcppExports.cpp: Regenerated
+	* R/RcppExports.R: Idem
+	* README.md: Added
+	* inst/include/spdlite: Sync with upstream
+	* inst/tinytest/test_basics.R: Adjust to wider log-level display
+
+2026-05-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/test_basics.R: Expand, and tweak
+	* R/package.R: Per-package documentation
+	* man/rspdlite-package.Rd: Idem
+	* configure: Explicitly test for C++20
+	* src/formatter.cpp: Use test result
+	* src/Makevars: Idem
+	* src/Makevars.win: Added
+	* cleanup: Remove generated src/Makevars
+
+2026-05-14  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/rspdlite: Support file sink
+	* inst/examples/R/example.R: Tweaked
+	* inst/examples/example1.cpp: Idem
+	* inst/examples/example2.cpp: Idem
+	* test/tinytest.R: Add unit test support
+	* inst/tinytest/test_basics.R: Idem
+	* DESCRIPTION: Idem
+	* .github/workflows/ci.yaml: Add CI support
+
+2026-05-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/rspdlite: Inline instance
+	* inst/examples/example1.cpp: Tweaked, and moved
+	* inst/examples/example2.cpp: Idem
+	* inst/examples/R/example.R: Idem
+	* src/RcppExports.cpp: Regenerated
+	* R/RcppExports.R: Idem
+
+2026-05-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/rspdlite: New principal header, support null_sink
+	* src/formatter.cpp: Added formatting accessors
+	* src/RcppExports.cpp: Regenerated
+	* R/RcppExports.R: Idem
+	* R/wrap.R: New R accessors
+	* NAMESPACE: Idem
+	* man/trace.Rd: New documentation
+	* .Rbuildignore: Added
+	* src/example.cpp: Tweaked
+	* man/exampleRsink: Idem
+	* src/example2.cpp: Added
+	* R/example3.R: Idem
+
+2026-05-10  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .editorconfig: Added
+	* cleanup: Idem
+	* src/example.cpp: Reindentation
+
+2026-05-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/RcppExports.cpp: Regenerated
+	* R/RcppExports.R: Idem
+
+2026-05-08  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Initial commit
+	* NAMESPACE: Idem
+	* inst/include/spdlite/: Initial upstream sync
+	* inst/include/rspdlite: Initial commit
+	* src/formatter.cpp: Idem
+	* src/example.cpp: Idem
+	* src/RcppExports.cpp: Idem
+	* src/Makevars: Idem
+	* R/RcppExports.R: Idem
+	* man/exampleRsink.Rd: Idem
+	* man/formatter.Rd: Idem
