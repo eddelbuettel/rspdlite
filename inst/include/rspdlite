@@ -25,26 +25,18 @@ namespace rspdlite {
     };
 
 // double quoting trick to get content instead of macro when quoting macro for filename
+#if defined(RSPDLITE_NULL_SINK)
+    inline spdlite::logger_st console(spdlite::null_sink{}); // select null sink
+#elif defined(RSPDLITE_FILE_SINK)
 #define Q(x) #x
 #define QUOTE(x) Q(x)
-#if defined(RSPDLITE_NULL_SINK)
-    inline spdlite::logger_st console(QUOTE(RSPDLITE_LOGGER_NAME), spdlite::null_sink{}); // select null sink
-#elif defined(RSPDLITE_FILE_SINK)
     constexpr char* filename = QUOTE(RSPDLITE_FILE_SINK);
-    #if !defined(RSPDLITE_LOGGER_NAME)
-        inline spdlite::logger_st console(spdlite::file_sink{filename, true});
-    #else
-        inline spdlite::logger_st console(QUOTE(RSPDLITE_LOGGER_NAME), spdlite::file_sink{filename, true});
-    #endif
-#else
-    #if !defined(RSPDLITE_LOGGER_NAME)
-       inline spdlite::logger_st console(rspdlite::r_sink{}); // instead of spdlite::console_sink{});
-    #else
-       inline spdlite::logger_st console(QUOTE(RSPDLITE_LOGGER_NAME), rspdlite::r_sink{});
-    #endif
-#endif
+    inline spdlite::logger_st console(spdlite::file_sink{filename, true});
 #undef Q
 #undef QUOTE
+#else
+    inline spdlite::logger_st console(rspdlite::r_sink{}); // instead of spdlite::console_sink{});
+#endif
 
     template <typename... Args>
     inline void trace(format_string_t<Args...> fmt, Args&&... args) {
@@ -99,6 +91,26 @@ namespace rspdlite {
         }
         Rcpp::stop("Unknown level ", str);
         return level::n_levels; // not reached
+   }
+
+   inline const char* timeprecisionToString(enum time_precision prc) {
+        static constexpr std::array<const char*, 4> names = { "none", "ms", "us", "ns" };
+        return names[static_cast<size_t>(prc)];
+   }
+
+   inline enum time_precision stringToTimeprecision(const std::string& str) {
+        static const std::unordered_map<std::string, enum time_precision> levelMap = {
+            {"none", time_precision::none},
+            {"ms",   time_precision::ms},
+            {"us",   time_precision::us},
+            {"ns",   time_precision::ns},
+        };
+        auto it = levelMap.find(str);
+        if (it != levelMap.end()) {
+            return it->second;
+        }
+        Rcpp::stop("Unknown time precision ", str);
+        return time_precision::none; // not reached
    }
 
    inline void        name(const std::string& s) { console.name(s);       }

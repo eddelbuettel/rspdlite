@@ -61,6 +61,10 @@ get_name_ <- function() {
     .Call(`_rspdlite_get_name_`)
 }
 
+set_precision_ <- function(s) {
+    invisible(.Call(`_rspdlite_set_precision_`, s))
+}
+
 cppstandard <- function() {
     .Call(`_rspdlite_cppstandard`)
 }

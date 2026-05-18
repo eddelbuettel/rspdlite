@@ -122,6 +122,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// set_precision_
+void set_precision_(const std::string& s);
+RcppExport SEXP _rspdlite_set_precision_(SEXP sSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type s(sSEXP);
+    set_precision_(s);
+    return R_NilValue;
+END_RCPP
+}
 // cppstandard
 int cppstandard();
 RcppExport SEXP _rspdlite_cppstandard() {
@@ -145,6 +155,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rspdlite_get_level_", (DL_FUNC) &_rspdlite_get_level_, 0},
     {"_rspdlite_set_name_", (DL_FUNC) &_rspdlite_set_name_, 1},
     {"_rspdlite_get_name_", (DL_FUNC) &_rspdlite_get_name_, 0},
+    {"_rspdlite_set_precision_", (DL_FUNC) &_rspdlite_set_precision_, 1},
     {"_rspdlite_cppstandard", (DL_FUNC) &_rspdlite_cppstandard, 0},
     {NULL, NULL, 0}
 };

@@ -36,6 +36,9 @@ set_name   <- function(s)       set_name_(s)
 ##' @rdname trace
 get_name   <- function()        get_name_()
 
+##' @rdname trace
+set_precision <- function(s)    set_precision_(s)
+
 fmt <- function(s, ...) {
     n <- ...length()
     v <- character(n)

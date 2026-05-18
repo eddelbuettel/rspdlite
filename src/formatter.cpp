@@ -108,6 +108,11 @@ void set_name_(const std::string& s) { rspdlite::console.name(s); }
 // [[Rcpp::export]]
 std::string get_name_()       { return rspdlite::console.name(); }
 
+// [[Rcpp::export]]
+void set_precision_(const std::string& s) {
+    rspdlite::console.format_options({.precision = rspdlite::stringToTimeprecision(s)});
+}
+
 // #else
 
 // #include <Rcpp/Lighter>

@@ -11,6 +11,7 @@
 \alias{get_level}
 \alias{set_name}
 \alias{get_name}
+\alias{set_precision}
 \title{Convenience Wrappers for 'spdlite' Logging}
 \usage{
 trace(s, ...)
@@ -32,6 +33,8 @@ get_level()
 set_name(s)
 
 get_name()
+
+set_precision(s)
 }
 \arguments{
 \item{s}{Character value for filename, pattern, level, or logging message}
