@@ -2,6 +2,8 @@ useDynLib(rspdlite, .registration=TRUE)
 importFrom(Rcpp, evalCpp)
 export(set_level,
        get_level,
+       set_name,
+       get_name,
        trace,
        debug,
        info,

@@ -9,6 +9,8 @@
 \alias{critical}
 \alias{set_level}
 \alias{get_level}
+\alias{set_name}
+\alias{get_name}
 \title{Convenience Wrappers for 'spdlite' Logging}
 \usage{
 trace(s, ...)
@@ -26,6 +28,10 @@ critical(s, ...)
 set_level(level)
 
 get_level()
+
+set_name(s)
+
+get_name()
 }
 \arguments{
 \item{s}{Character value for filename, pattern, level, or logging message}

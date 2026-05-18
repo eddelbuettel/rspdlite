@@ -30,6 +30,12 @@ set_level   <- function(level)  set_level_(level)
 ##' @rdname trace
 get_level   <- function()       get_level_()
 
+##' @rdname trace
+set_name   <- function(s)       set_name_(s)
+
+##' @rdname trace
+get_name   <- function()        get_name_()
+
 fmt <- function(s, ...) {
     n <- ...length()
     v <- character(n)

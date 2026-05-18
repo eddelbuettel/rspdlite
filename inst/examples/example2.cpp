@@ -17,7 +17,8 @@ void example2() {
     rspdlite::info("{:<30}", "left aligned");
 
     // set level to info
-    rspdlite::critical("-- level to info");
+    rspdlite::critical("-- level to info, name to 'demo'");
+    rspdlite::name("demo");
     rspdlite::level(spdlite::level::info);
 
     rspdlite::info("Some more");

@@ -11,6 +11,7 @@ example3 <- function() {
     rspdlite::critical("-- level to error and calling example1 and example2")
     rspdlite::set_level("error")
     example1()
+    rspdite::set_name("random_name")
     example2()
 }
 

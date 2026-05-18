@@ -1,3 +1,16 @@
+2026-05-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/spdlite/logger.h (name): Add name setter
+	* src/formatter.cpp: Support name setter and getter
+	* inst/include/rspdlite: Idem
+	* src/RcppExports.cpp: Regenerated
+	* R/RcppExports.R: Idem
+	* man/trace.Rd: Idem
+	* R/wrap.R: New R accessors
+	* NAMESPACE: Idem
+	* inst/examples/example.R: Show name setter
+	* inst/examples/example2.cpp: Idem
+
 2026-05-17  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/spdlite: Support optional logger name via #define

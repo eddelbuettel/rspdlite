@@ -82,7 +82,7 @@ namespace rspdlite {
         return names[static_cast<size_t>(lvl)];
     }
 
-    inline enum level stringToEnum(const std::string& str) {
+    inline enum level stringToLevel(const std::string& str) {
         static const std::unordered_map<std::string, enum level> levelMap = {
             {"trace",    level::trace},
             {"debug",    level::debug},
@@ -100,4 +100,7 @@ namespace rspdlite {
         Rcpp::stop("Unknown level ", str);
         return level::n_levels; // not reached
    }
+
+   inline void        name(const std::string& s) { console.name(s);       }
+   inline std::string name()                     { return console.name(); }
 }

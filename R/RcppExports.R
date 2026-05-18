@@ -53,6 +53,14 @@ get_level_ <- function() {
     .Call(`_rspdlite_get_level_`)
 }
 
+set_name_ <- function(s) {
+    invisible(.Call(`_rspdlite_set_name_`, s))
+}
+
+get_name_ <- function() {
+    .Call(`_rspdlite_get_name_`)
+}
+
 cppstandard <- function() {
     .Call(`_rspdlite_cppstandard`)
 }

@@ -38,7 +38,7 @@ std::string forward_to_format(const std::string, const std::vector<std::string>&
 }
 
 namespace rspdlite {
-    enum level stringToEnum(std::string) { return level::info; }
+    enum level stringToLevel(std::string) { return level::info; }
     std::string levelToString(enum level) { return std::string("info"); }
     struct dummy_console {
         void trace(std::string_view) {}
@@ -97,10 +97,16 @@ void error_(std::string s) { rspdlite::console.error(std::string_view(s)); }
 void critical_(std::string s) { rspdlite::console.critical(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void set_level_(std::string s) { rspdlite::console.log_level(rspdlite::stringToEnum(s)); }
+void set_level_(std::string s) { rspdlite::console.log_level(rspdlite::stringToLevel(s)); }
 
 // [[Rcpp::export]]
 std::string get_level_() { return rspdlite::levelToString(rspdlite::console.log_level()); }
+
+// [[Rcpp::export]]
+void set_name_(const std::string& s) { rspdlite::console.name(s); }
+
+// [[Rcpp::export]]
+std::string get_name_()       { return rspdlite::console.name(); }
 
 // #else
 
