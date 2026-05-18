@@ -26,46 +26,46 @@ namespace rspdlite {
 
 // double quoting trick to get content instead of macro when quoting macro for filename
 #if defined(RSPDLITE_NULL_SINK)
-    inline spdlite::logger_st console(spdlite::null_sink{}); // select null sink
+    inline spdlite::logger_st logger(spdlite::null_sink{}); // select null sink
 #elif defined(RSPDLITE_FILE_SINK)
 #define Q(x) #x
 #define QUOTE(x) Q(x)
     constexpr char* filename = QUOTE(RSPDLITE_FILE_SINK);
-    inline spdlite::logger_st console(spdlite::file_sink{filename, true});
+    inline spdlite::logger_st logger(spdlite::file_sink{filename, true});
 #undef Q
 #undef QUOTE
 #else
-    inline spdlite::logger_st console(rspdlite::r_sink{}); // instead of spdlite::console_sink{});
+    inline spdlite::logger_st logger(rspdlite::r_sink{}); // instead of spdlite::console_sink{});
 #endif
 
     template <typename... Args>
     inline void trace(format_string_t<Args...> fmt, Args&&... args) {
-        console.log(level::trace, fmt, std::forward<Args>(args)...);
+        logger.log(level::trace, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
     inline void debug(format_string_t<Args...> fmt, Args&&... args) {
-        console.log(level::debug, fmt, std::forward<Args>(args)...);
+        logger.log(level::debug, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
     inline void info(format_string_t<Args...> fmt, Args&&... args) {
-        console.log(level::info, fmt, std::forward<Args>(args)...);
+        logger.log(level::info, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
     inline void warn(format_string_t<Args...> fmt, Args&&... args) {
-        console.log(level::warn, fmt, std::forward<Args>(args)...);
+        logger.log(level::warn, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
     inline void error(format_string_t<Args...> fmt, Args&&... args) {
-        console.log(level::err, fmt, std::forward<Args>(args)...);
+        logger.log(level::err, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
     inline void critical(format_string_t<Args...> fmt, Args&&... args) {
-        console.log(level::critical, fmt, std::forward<Args>(args)...);
+        logger.log(level::critical, fmt, std::forward<Args>(args)...);
     }
 
-    inline void level(level lvl) { console.log_level(lvl); }
+    inline void level(level lvl) { logger.log_level(lvl); }
 
-    inline enum level level() { return console.log_level(); }
+    inline enum level level() { return logger.log_level(); }
 
     inline const char* levelToString(enum level lvl) {
         static constexpr std::array<const char*, 8> names = {
@@ -113,6 +113,6 @@ namespace rspdlite {
         return time_precision::none; // not reached
    }
 
-   inline void        name(const std::string& s) { console.name(s);       }
-   inline std::string name()                     { return console.name(); }
+   inline void        name(const std::string& s) { logger.name(s);       }
+   inline std::string name()                     { return logger.name(); }
 }

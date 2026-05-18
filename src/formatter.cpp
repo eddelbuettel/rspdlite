@@ -40,7 +40,7 @@ std::string forward_to_format(const std::string, const std::vector<std::string>&
 namespace rspdlite {
     enum level stringToLevel(std::string) { return level::info; }
     std::string levelToString(enum level) { return std::string("info"); }
-    struct dummy_console {
+    struct dummy_logger {
         void trace(std::string_view) {}
         void debug(std::string_view) {}
         void info(std::string_view) {}
@@ -49,8 +49,10 @@ namespace rspdlite {
         void critical(std::string_view) {}
         void log_level(enum level) {}
         enum level log_level() { return level::info; }
+        void name(std::string) {}
+        std::string name() { return std::string(); }
     };
-    dummy_console console;
+    dummy_logger logger;
 }
 
 #endif
@@ -79,78 +81,41 @@ std::string formatter(const std::string s, std::vector<std::string> v) {
 }
 
 // [[Rcpp::export]]
-void trace_(std::string s) { rspdlite::console.trace(std::string_view(s)); }
+void trace_(std::string s) { rspdlite::logger.trace(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void debug_(std::string s) { rspdlite::console.debug(std::string_view(s)); }
+void debug_(std::string s) { rspdlite::logger.debug(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void info_(std::string s) { rspdlite::console.info(std::string_view(s)); }
+void info_(std::string s) { rspdlite::logger.info(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void warn_(std::string s) { rspdlite::console.warn(std::string_view(s)); }
+void warn_(std::string s) { rspdlite::logger.warn(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void error_(std::string s) { rspdlite::console.error(std::string_view(s)); }
+void error_(std::string s) { rspdlite::logger.error(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void critical_(std::string s) { rspdlite::console.critical(std::string_view(s)); }
+void critical_(std::string s) { rspdlite::logger.critical(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void set_level_(std::string s) { rspdlite::console.log_level(rspdlite::stringToLevel(s)); }
+void set_level_(std::string s) { rspdlite::logger.log_level(rspdlite::stringToLevel(s)); }
 
 // [[Rcpp::export]]
-std::string get_level_() { return rspdlite::levelToString(rspdlite::console.log_level()); }
+std::string get_level_() { return rspdlite::levelToString(rspdlite::logger.log_level()); }
 
 // [[Rcpp::export]]
-void set_name_(const std::string& s) { rspdlite::console.name(s); }
+void set_name_(const std::string& s) { rspdlite::logger.name(s); }
 
 // [[Rcpp::export]]
-std::string get_name_()       { return rspdlite::console.name(); }
+std::string get_name_()       { return rspdlite::logger.name(); }
 
 // [[Rcpp::export]]
 void set_precision_(const std::string& s) {
-    rspdlite::console.format_options({.precision = rspdlite::stringToTimeprecision(s)});
+#if  __cplusplus >= 202002L
+    rspdlite::logger.format_options({.precision = rspdlite::stringToTimeprecision(s)});
+#endif
 }
-
-// #else
-
-// #include <Rcpp/Lighter>
-
-// // Either insufficient C++20, or C++17 or older so no rspdlite for us
-// inline void badCpp() { Rcpp::message(Rcpp::wrap("Insufficient compiler. Sorry.")); }
-
-// // [[Rcpp::export]]
-// std::string formatter(const std::string s, std::vector<std::string> v) {
-//     badCpp();
-//     return s + v[0];
-// }
-
-// // [[Rcpp::export]]
-// void trace_(std::string s) { badCpp(); }
-
-// // [[Rcpp::export]]
-// void debug_(std::string s) { badCpp(); }
-
-// // [[Rcpp::export]]
-// void info_(std::string s) { badCpp(); }
-
-// // [[Rcpp::export]]
-// void warn_(std::string s) { badCpp(); }
-
-// // [[Rcpp::export]]
-// void error_(std::string s) { badCpp(); }
-
-// // [[Rcpp::export]]
-// void critical_(std::string s) { badCpp(); }
-
-// // [[Rcpp::export]]
-// void set_level_(std::string s) { badCpp(); }
-
-// // [[Rcpp::export]]
-// std::string get_level_() { return std::string("info"); }
-
-// #endif
 
 // [[Rcpp::export]]
 int cppstandard() { return __cplusplus; }
