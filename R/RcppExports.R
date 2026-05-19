@@ -69,6 +69,14 @@ show_thread_id_ <- function(b) {
     invisible(.Call(`_rspdlite_show_thread_id_`, b))
 }
 
+show_date_ <- function(b) {
+    invisible(.Call(`_rspdlite_show_date_`, b))
+}
+
+show_utc_ <- function(b) {
+    invisible(.Call(`_rspdlite_show_utc_`, b))
+}
+
 cppstandard <- function() {
     .Call(`_rspdlite_cppstandard`)
 }

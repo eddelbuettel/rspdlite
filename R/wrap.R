@@ -43,6 +43,12 @@ set_precision <- function(s)    set_precision_(s)
 ##' @rdname trace
 show_thread_id <- function(b = TRUE)   show_thread_id_(b)
 
+##' @rdname trace
+show_date <- function(b = TRUE) show_date_(b)
+
+##' @rdname trace
+show_utc <- function(b = TRUE) show_utc_(b)
+
 fmt <- function(s, ...) {
     n <- ...length()
     v <- character(n)

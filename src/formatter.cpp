@@ -125,4 +125,18 @@ void show_thread_id_(const bool b) {
 }
 
 // [[Rcpp::export]]
+void show_date_(const bool b) {
+#if  __cplusplus >= 202002L
+    rspdlite::logger.format_options({.show_date = b});
+#endif
+}
+
+// [[Rcpp::export]]
+void show_utc_(const bool b) {
+#if  __cplusplus >= 202002L
+    rspdlite::logger.format_options({.utc = b});
+#endif
+}
+
+// [[Rcpp::export]]
 int cppstandard() { return __cplusplus; }

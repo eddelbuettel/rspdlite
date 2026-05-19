@@ -13,6 +13,8 @@
 \alias{get_name}
 \alias{set_precision}
 \alias{show_thread_id}
+\alias{show_date}
+\alias{show_utc}
 \title{Convenience Wrappers for 'spdlite' Logging}
 \usage{
 trace(s, ...)
@@ -38,6 +40,10 @@ get_name()
 set_precision(s)
 
 show_thread_id(b = TRUE)
+
+show_date(b = TRUE)
+
+show_utc(b = TRUE)
 }
 \arguments{
 \item{s}{Character value for filename, pattern, level, or logging message}

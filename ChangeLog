@@ -1,3 +1,12 @@
+2026-05-19  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/formatter.cpp: Add date on/off and utc on/off setter
+	* R/wrap.R: New R accessors
+	* NAMESPACE: Export new accessors
+	* src/RcppExports.cpp: Regenerated
+	* R/RcppExports.R: Idem
+	* man/trace.Rd: Idem
+
 2026-05-18  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/spdlite/logger.h (name): Add name setter
@@ -8,7 +17,7 @@
 	* R/RcppExports.R: Idem
 	* man/trace.Rd: Idem
 	* R/wrap.R: New R accessors
-	* NAMESPACE: Idem
+	* NAMESPACE: Export new accessors
 	* inst/examples/example.R: Show name setter
 	* inst/examples/example2.cpp: Idem
 
