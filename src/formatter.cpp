@@ -118,4 +118,11 @@ void set_precision_(const std::string& s) {
 }
 
 // [[Rcpp::export]]
+void show_thread_id_(const bool b) {
+#if  __cplusplus >= 202002L
+    rspdlite::logger.format_options({.show_thread_id = b});
+#endif
+}
+
+// [[Rcpp::export]]
 int cppstandard() { return __cplusplus; }

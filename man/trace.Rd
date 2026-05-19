@@ -12,6 +12,7 @@
 \alias{set_name}
 \alias{get_name}
 \alias{set_precision}
+\alias{show_thread_id}
 \title{Convenience Wrappers for 'spdlite' Logging}
 \usage{
 trace(s, ...)
@@ -35,6 +36,8 @@ set_name(s)
 get_name()
 
 set_precision(s)
+
+show_thread_id(b = TRUE)
 }
 \arguments{
 \item{s}{Character value for filename, pattern, level, or logging message}
@@ -42,6 +45,8 @@ set_precision(s)
 \item{...}{Supplementary arguments for the logging string}
 
 \item{level}{Character value for the logging level}
+
+\item{b}{Boolean flag to select or unselect a formatting option}
 }
 \value{
 Nothing is returned from these functions (with the exception of

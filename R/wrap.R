@@ -4,6 +4,7 @@
 ##'
 ##' @param level Character value for the logging level
 ##' @param s Character value for filename, pattern, level, or logging message
+##' @param b Boolean flag to select or unselect a formatting option
 ##' @param ... Supplementary arguments for the logging string
 ##' @return Nothing is returned from these functions (with the exception of
 ##' \code{get_level()}) as they are invoked for their side-effects.
@@ -38,6 +39,9 @@ get_name   <- function()        get_name_()
 
 ##' @rdname trace
 set_precision <- function(s)    set_precision_(s)
+
+##' @rdname trace
+show_thread_id <- function(b = TRUE)   show_thread_id_(b)
 
 fmt <- function(s, ...) {
     n <- ...length()

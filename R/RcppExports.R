@@ -65,6 +65,10 @@ set_precision_ <- function(s) {
     invisible(.Call(`_rspdlite_set_precision_`, s))
 }
 
+show_thread_id_ <- function(b) {
+    invisible(.Call(`_rspdlite_show_thread_id_`, b))
+}
+
 cppstandard <- function() {
     .Call(`_rspdlite_cppstandard`)
 }

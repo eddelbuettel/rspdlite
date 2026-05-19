@@ -2,7 +2,7 @@
 
 	* inst/include/spdlite/logger.h (name): Add name setter
 	* src/formatter.cpp: Add name setter and getter, precision setter,
-	rename default instance to logger
+	rename default instance to logger, thread_id display switch
 	* inst/include/rspdlite: Idem
 	* src/RcppExports.cpp: Regenerated
 	* R/RcppExports.R: Idem
