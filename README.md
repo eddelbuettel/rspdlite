@@ -77,13 +77,30 @@ remains simpler. As we convert each argument directly to a character (then passe
 layer) we do not offer the extra formatting options available directly from C++. We have not found
 this to be an issue.
 
+### Design and Limitations
+
+[spdlite][spdlite] is by _design and choice_ very lightweight. There are essentially no state
+variables, and nearly every part of behaviour is governed by _compile-time_ choices as core ability
+of modern C++ is to (allow to) shift as much as possible to compile-time rather than run-time. For
+example the basic formatting abilities are passed through by invoking the constructor of the
+relevant object.  So when we set one of the options individually (say via `set_precision()` to
+change the time precision from the sane default of milliseconds to either micro- or nanoseconds), an
+earlier formatting choice of also showing the thread id will fall back to its default of 'off'. The
+best way around this is to use `set_format()` and _simulatenously_ set all values one desires
+changes.
+
+Similarly, while we offer the `null sink` in this package too, truly lightweight performance (as
+demonstrated by the upstream benchmarks) only happen when the logging level is also set to `off`.
+But that cannot easily be accomplished just by instantiating the `sink`.  (We have ideas about to
+accommodate this in the R package so we may get to this.)
+
 ### Author
 
 [Gabi Melman](https://github.com/gabime) is the main author of both [spdlog][spdlog] and
 [spdlite][spdlite].
 
 [Victor Zverovich](https://github.com/vitaut) is the main author of the embedded [fmt][fmt] library
-offered as a fallback.
+offered as an alternative to the C++20 library `std::format`.
 
 [Dirk Eddelbuettel](https://dirk.eddelbuettel.com) is author of this package and the R integration.
 

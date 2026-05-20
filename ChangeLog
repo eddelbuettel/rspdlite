@@ -7,6 +7,8 @@
 	* R/RcppExports.R: Idem
 	* man/trace.Rd: Idem
 
+	* README.md: Expand a little on design and limitation
+
 2026-05-19  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/formatter.cpp: Add date on/off and utc on/off setter
