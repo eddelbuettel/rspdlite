@@ -38,13 +38,13 @@ set_name(s)
 
 get_name()
 
-set_precision(s)
+set_precision(precision)
 
-show_thread_id(b = TRUE)
+show_thread_id(show_thread_id = TRUE)
 
-show_date(b = TRUE)
+show_date(show_date = TRUE)
 
-show_utc(b = TRUE)
+show_utc(utc = TRUE)
 
 set_format(utc = FALSE, show_date = TRUE, show_thread_id = FALSE,
   precision = "ms")
@@ -56,7 +56,15 @@ set_format(utc = FALSE, show_date = TRUE, show_thread_id = FALSE,
 
 \item{level}{Character value for the logging level}
 
-\item{b}{Boolean flag to select or unselect a formatting option}
+\item{precision}{Character value for selected time precision: one of \dQuote{ms}
+(the default format), \dQuote{us}, \dQuote{ns} or \dQuote{none}}
+
+\item{show_thread_id}{Boolean flag select display of current thread, default is off}
+
+\item{show_date}{Boolean flag select display of date part of current, default is on}
+
+\item{utc}{Boolean flag select display of current time in UTC rather than local,
+default is off}
 }
 \value{
 Nothing is returned from these functions (with the exception of

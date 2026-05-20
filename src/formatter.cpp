@@ -1,4 +1,7 @@
 
+// add ', cpp' for callable interface
+// [[Rcpp::interfaces(r)]]
+
 // In order to survive on CRAN, we have to cope with non-C++20 compilation
 #if  __cplusplus >= 202002L
 

@@ -4,7 +4,12 @@
 ##'
 ##' @param level Character value for the logging level
 ##' @param s Character value for filename, pattern, level, or logging message
-##' @param b Boolean flag to select or unselect a formatting option
+##' @param precision Character value for selected time precision: one of \dQuote{ms}
+##' (the default format), \dQuote{us}, \dQuote{ns} or \dQuote{none}
+##' @param show_date Boolean flag select display of date part of current, default is on
+##' @param show_thread_id Boolean flag select display of current thread, default is off
+##' @param utc Boolean flag select display of current time in UTC rather than local,
+##' default is off
 ##' @param ... Supplementary arguments for the logging string
 ##' @return Nothing is returned from these functions (with the exception of
 ##' \code{get_level()}) as they are invoked for their side-effects.
@@ -38,16 +43,16 @@ set_name   <- function(s)       set_name_(s)
 get_name   <- function()        get_name_()
 
 ##' @rdname trace
-set_precision <- function(s)    set_precision_(s)
+set_precision <- function(precision)    set_precision_(precision)
 
 ##' @rdname trace
-show_thread_id <- function(b = TRUE)   show_thread_id_(b)
+show_thread_id <- function(show_thread_id = TRUE) show_thread_id_(show_thread_id)
 
 ##' @rdname trace
-show_date <- function(b = TRUE) show_date_(b)
+show_date <- function(show_date = TRUE) show_date_(show_date)
 
 ##' @rdname trace
-show_utc <- function(b = TRUE) show_utc_(b)
+show_utc <- function(utc = TRUE) show_utc_(utc)
 
 ##' @rdname trace
 set_format <- function(utc = FALSE,
