@@ -1,3 +1,12 @@
+2026-05-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/formatter.cpp (set_format_): Add an all-in setter for all options
+	* R/wrap.R: Add R accessor set_format()
+	* NAMESPACE: Export new accessor
+	* src/RcppExports.cpp: Regenerated
+	* R/RcppExports.R: Idem
+	* man/trace.Rd: Idem
+
 2026-05-19  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/formatter.cpp: Add date on/off and utc on/off setter

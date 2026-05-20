@@ -28,15 +28,12 @@ std::string forward_to_format(const std::string s,
 #else
 
 #include <Rcpp/Lighter>
-
 constexpr int max_args = 15;            // Arbitrary but 'smallish'
 enum class level : int { off = 0, on = 1, info = 2 };
-
 std::string forward_to_format(const std::string, const std::vector<std::string>&) {
     Rcpp::message(Rcpp::wrap("No spdlite support without C++20. Sorry."));
     return std::string("");
 }
-
 namespace rspdlite {
     enum level stringToLevel(std::string) { return level::info; }
     std::string levelToString(enum level) { return std::string("info"); }
@@ -54,6 +51,11 @@ namespace rspdlite {
     };
     dummy_logger logger;
 }
+void set_precision_(const std::string&) { }
+void show_thread_id_(const bool) { }
+void show_date_(const bool) { }
+void show_utc_(const bool) { }
+void set_format_(const bool, const bool, const bool, const std::string&) { }
 
 #endif
 
@@ -110,33 +112,34 @@ void set_name_(const std::string& s) { rspdlite::logger.name(s); }
 // [[Rcpp::export]]
 std::string get_name_()       { return rspdlite::logger.name(); }
 
+#if  __cplusplus >= 202002L
+
 // [[Rcpp::export]]
 void set_precision_(const std::string& s) {
-#if  __cplusplus >= 202002L
     rspdlite::logger.format_options({.precision = rspdlite::stringToTimeprecision(s)});
-#endif
 }
 
 // [[Rcpp::export]]
-void show_thread_id_(const bool b) {
-#if  __cplusplus >= 202002L
-    rspdlite::logger.format_options({.show_thread_id = b});
-#endif
-}
+void show_thread_id_(const bool b) { rspdlite::logger.format_options({.show_thread_id = b}); }
 
 // [[Rcpp::export]]
-void show_date_(const bool b) {
-#if  __cplusplus >= 202002L
-    rspdlite::logger.format_options({.show_date = b});
-#endif
-}
+void show_date_(const bool b) { rspdlite::logger.format_options({.show_date = b}); }
 
 // [[Rcpp::export]]
-void show_utc_(const bool b) {
-#if  __cplusplus >= 202002L
-    rspdlite::logger.format_options({.utc = b});
-#endif
+void show_utc_(const bool b) { rspdlite::logger.format_options({.utc = b}); }
+
+// [[Rcpp::export]]
+void set_format_(const bool utc, const bool show_date, const bool show_thread_id,
+                 const std::string& precision) {
+    rspdlite::logger.format_options({
+            .utc = utc,
+            .show_date = show_date,
+            .show_thread_id = show_thread_id,
+            .precision = rspdlite::stringToTimeprecision(precision)
+        });
 }
+
+#endif
 
 // [[Rcpp::export]]
 int cppstandard() { return __cplusplus; }

@@ -77,6 +77,10 @@ show_utc_ <- function(b) {
     invisible(.Call(`_rspdlite_show_utc_`, b))
 }
 
+set_format_ <- function(utc, show_date, show_thread_id, precision) {
+    invisible(.Call(`_rspdlite_set_format_`, utc, show_date, show_thread_id, precision))
+}
+
 cppstandard <- function() {
     .Call(`_rspdlite_cppstandard`)
 }

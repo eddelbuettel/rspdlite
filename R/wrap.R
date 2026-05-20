@@ -49,6 +49,14 @@ show_date <- function(b = TRUE) show_date_(b)
 ##' @rdname trace
 show_utc <- function(b = TRUE) show_utc_(b)
 
+##' @rdname trace
+set_format <- function(utc = FALSE,
+                       show_date = TRUE,
+                       show_thread_id = FALSE,
+                       precision = "ms") {
+    set_format_(utc, show_date, show_thread_id, precision)
+}
+
 fmt <- function(s, ...) {
     n <- ...length()
     v <- character(n)

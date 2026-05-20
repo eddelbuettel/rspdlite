@@ -162,6 +162,19 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// set_format_
+void set_format_(const bool utc, const bool show_date, const bool show_thread_id, const std::string& precision);
+RcppExport SEXP _rspdlite_set_format_(SEXP utcSEXP, SEXP show_dateSEXP, SEXP show_thread_idSEXP, SEXP precisionSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const bool >::type utc(utcSEXP);
+    Rcpp::traits::input_parameter< const bool >::type show_date(show_dateSEXP);
+    Rcpp::traits::input_parameter< const bool >::type show_thread_id(show_thread_idSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type precision(precisionSEXP);
+    set_format_(utc, show_date, show_thread_id, precision);
+    return R_NilValue;
+END_RCPP
+}
 // cppstandard
 int cppstandard();
 RcppExport SEXP _rspdlite_cppstandard() {
@@ -189,6 +202,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_rspdlite_show_thread_id_", (DL_FUNC) &_rspdlite_show_thread_id_, 1},
     {"_rspdlite_show_date_", (DL_FUNC) &_rspdlite_show_date_, 1},
     {"_rspdlite_show_utc_", (DL_FUNC) &_rspdlite_show_utc_, 1},
+    {"_rspdlite_set_format_", (DL_FUNC) &_rspdlite_set_format_, 4},
     {"_rspdlite_cppstandard", (DL_FUNC) &_rspdlite_cppstandard, 0},
     {NULL, NULL, 0}
 };
