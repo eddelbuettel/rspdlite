@@ -79,20 +79,29 @@ this to be an issue.
 
 ### Design and Limitations
 
-[spdlite][spdlite] is by _design and choice_ very lightweight. There are essentially no state
-variables, and nearly every part of behaviour is governed by _compile-time_ choices as core ability
-of modern C++ is to (allow to) shift as much as possible to compile-time rather than run-time. For
-example the basic formatting abilities are passed through by invoking the constructor of the
-relevant object.  So when we set one of the options individually (say via `set_precision()` to
-change the time precision from the sane default of milliseconds to either micro- or nanoseconds), an
-earlier formatting choice of also showing the thread id will fall back to its default of 'off'. The
-best way around this is to use `set_format()` and _simulatenously_ set all values one desires
-changes.
+[spdlite][spdlite] is by _design and choice_ very lightweight---and _very fast_. There are
+essentially no state variables, and nearly every part of behaviour is governed by _compile-time_
+choices as core ability of modern C++ is to (allow to) shift as much as possible to compile-time
+rather than run-time. For example the basic formatting abilities are passed through by invoking the
+constructor of the relevant object.  So when we set one of the options individually (say via
+`set_precision()` to change the time precision from the sane default of milliseconds to either
+micro- or nanoseconds), an earlier formatting choice of also showing the thread id will fall back to
+its default of 'off'. The best way around this is to use `set_format()` and _simulatenously_ set all
+values one desires changes.
 
 Similarly, while we offer the `null sink` in this package too, truly lightweight performance (as
 demonstrated by the upstream benchmarks) only happen when the logging level is also set to `off`.
 But that cannot easily be accomplished just by instantiating the `sink`.  (We have ideas about to
 accommodate this in the R package so we may get to this.)
+
+### C++ Usage Options
+
+While this is an R package, we stress the 'symmetric' use from C++. Given the lightweight nature,
+more advanced use from C++ is equally possible. One could for example use the (coloured) console
+sink (but make sure not to use it in code going to CRAN as it will have issues with `R CMD check`),
+or the rotating sink we do not (yet ?) expose---or the fact that from C++ it is easy to a)
+instantiate multiple sinks (!!) or b) easily create multiple loggers at different levels or
+configurations. The [spdlite][spdlite] documentation has of course more on this.
 
 ### Author
 
