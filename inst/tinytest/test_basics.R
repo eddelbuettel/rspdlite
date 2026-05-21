@@ -39,3 +39,6 @@ expect_stdout(rspdlite::info("abc"), "")
 expect_stdout(rspdlite::warn("abc"), "")
 expect_stdout(rspdlite::error("abc"), "")
 expect_stdout(rspdlite::critical("abc"), "")
+
+## reset level
+expect_silent(rspdlite::set_level("info"))
