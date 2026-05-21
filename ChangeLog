@@ -3,6 +3,7 @@
 	* src/formatter.cpp (set_format_): Add an all-in setter for all options
 	* R/wrap.R: Add R accessor set_format(), document flags
 	* man/trace.Rd: Regenerated
+	* inst/tinytest/test_formats.R: Some tests for formats
 
 	* NAMESPACE: Export new accessor
 	* src/RcppExports.cpp: Regenerated
