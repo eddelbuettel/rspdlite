@@ -8,6 +8,10 @@
 	* R/package.R: Remove erroneous '@internal' tag
 	* man/rspdlite-package.Rd: Regenerated
 
+	* inst/include/spdlite/: Synchronized with upstream
+	* inst/include/rspdlite: Adjusted
+	* src/formatter: Idem
+
 2026-05-21  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Expand on C++ usage options

@@ -104,37 +104,37 @@ void error_(std::string s) { rspdlite::logger.error(std::string_view(s)); }
 void critical_(std::string s) { rspdlite::logger.critical(std::string_view(s)); }
 
 // [[Rcpp::export]]
-void set_level_(std::string s) { rspdlite::logger.log_level(rspdlite::stringToLevel(s)); }
+void set_level_(std::string s) { rspdlite::logger.set_log_level(rspdlite::stringToLevel(s)); }
 
 // [[Rcpp::export]]
-std::string get_level_() { return rspdlite::levelToString(rspdlite::logger.log_level()); }
+std::string get_level_() { return rspdlite::levelToString(rspdlite::logger.get_log_level()); }
 
 // [[Rcpp::export]]
-void set_name_(const std::string& s) { rspdlite::logger.name(s); }
+void set_name_(const std::string& s) { rspdlite::logger.set_name(s); }
 
 // [[Rcpp::export]]
-std::string get_name_()       { return rspdlite::logger.name(); }
+std::string get_name_()       { return std::string(rspdlite::logger.get_name()); }
 
 #if  __cplusplus >= 202002L
 
 // [[Rcpp::export]]
 void set_precision_(const std::string& s) {
-    rspdlite::logger.format_options({.precision = rspdlite::stringToTimeprecision(s)});
+    rspdlite::logger.set_format_options({.precision = rspdlite::stringToTimeprecision(s)});
 }
 
 // [[Rcpp::export]]
-void show_thread_id_(const bool b) { rspdlite::logger.format_options({.show_thread_id = b}); }
+void show_thread_id_(const bool b) { rspdlite::logger.set_format_options({.show_thread_id = b}); }
 
 // [[Rcpp::export]]
-void show_date_(const bool b) { rspdlite::logger.format_options({.show_date = b}); }
+void show_date_(const bool b) { rspdlite::logger.set_format_options({.show_date = b}); }
 
 // [[Rcpp::export]]
-void show_utc_(const bool b) { rspdlite::logger.format_options({.utc = b}); }
+void show_utc_(const bool b) { rspdlite::logger.set_format_options({.utc = b}); }
 
 // [[Rcpp::export]]
 void set_format_(const bool utc, const bool show_date, const bool show_thread_id,
                  const std::string& precision) {
-    rspdlite::logger.format_options({
+    rspdlite::logger.set_format_options({
             .utc = utc,
             .show_date = show_date,
             .show_thread_id = show_thread_id,
