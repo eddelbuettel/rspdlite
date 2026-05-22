@@ -29,22 +29,40 @@ logging messages can be selected at compile time.
 
 #### From C++
 
-As seen in [examples/example1.cpp](inst/examples/example1.cpp), we can use the same example from the
-[spdlite][spdlite] docs:
+As seen in [examples/example1.cpp][ex1] and [examples/example2.cpp][ex2] we can use the same C++
+example from the [spdlite][spdlite] docs, either directly accessing an instantiated `logger` object
+as in the first example
 
 ```c++
-rspdlite::info("Some more");
-rspdlite::error("Some error message with arg: {}", 1);
-rspdlite::warn("Easy padding in numbers like {:08d}", 12);
-rspdlite::critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
-rspdlite::info("Support for floats {:03.2f}", 1.23456);
-rspdlite::info("Positional args are {1} {0}..", "too", "supported");
-rspdlite::info("{:<30}", "left aligned");
+// Direct use of the logger object as in the upstream docs
+rspdlite::logger.info("Welcome to spdlog!");
+rspdlite::logger.error("Some error message with arg: {}", 1);
+rspdlite::logger.warn("Easy padding in numbers like {:08d}", 12);
+rspdlite::logger.critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
+rspdlite::logger.info("Support for floats {:03.2f}", 1.23456);
+rspdlite::logger.info("Positional args are {1} {0}..", "too", "supported");
+rspdlite::logger.info("{:<30}", "left aligned");
+```
+
+or, preferably, by using a level of indirection we added as shown in the second example (of which
+just show the first half)
+
+```c++
+rspdlite::log_critical("-- level to warn");
+rspdlite::set_level(spdlite::level::warn);
+
+rspdlite::log_info("Some more");
+rspdlite::log_error("Some error message with arg: {}", 1);
+rspdlite::log_warn("Easy padding in numbers like {:08d}", 12);
+rspdlite::log_critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
+rspdlite::log_info("Support for floats {:03.2f}", 1.23456);
+rspdlite::log_info("Positional args are {1} {0}..", "too", "supported");
+rspdlite::log_info("{:<30}", "left aligned");
 ```
 
 The default logging level is 'info' so all these message appear by default. As seen in
-[examples/example2.cpp](inst/examples/example2.cpp) we can also alter the logging level dynamically
-to show more (or fewer) messages.
+[examples/example2.cpp][ex2] we can also alter the logging level dynamically to show more (or fewer)
+messages.
 
 By using a `#define` also supplying a filename, we can (at compile-time) select a 'file sink'. (There
 is also a rotating file sink (with a capacity limit) we could enable similarly.) Note that the
@@ -58,17 +76,17 @@ is also a rotating file sink (with a capacity limit) we could enable similarly.)
 #### From R
 
 Following the nice user experience offered by [spdl][spdl], we similarly provide access via the
-'package name colon colon' patter from R as can be seen in [examples/example.R](inst/examples/example.R)
+'package name colon colon' patter from R as can be seen in [examples/example.R][exR]
 
 ```r
-rspdlite::critical("-- level to debug")
+rspdlite::log_critical("-- level to debug")
 rspdlite::set_level("debug")
 
-rspdlite::info("Some more at info")
-rspdlite::error("Some error message with arg: {}", 1)
-rspdlite::error("Some error message with more args: {} and {}", 1, "abc")
+rspdlite::log_info("Some more at info")
+rspdlite::log_error("Some error message with arg: {}", 1)
+rspdlite::log_error("Some error message with more args: {} and {}", 1, "abc")
 
-rspdlite::critical("-- level to error and calling example1 and example2")
+rspdlite::log_critical("-- level to error and calling example1 and example2")
 rspdlite::set_level("error")
 ```
 
@@ -125,3 +143,6 @@ offered as an alternative to the C++20 library `std::format`.
 [spdlite]: https://github.com/gabime/spdlite
 [fmt]: https://github.com/fmtlib/fmt
 [rspdlite]: https://github.com/eddelbuettel/rspdlite
+[ex1]: inst/examples/example1.cpp
+[ex2]: inst/examples/example2.cpp
+[exR]: inst/examples/example.R
