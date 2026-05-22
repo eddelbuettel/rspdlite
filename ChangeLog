@@ -12,6 +12,9 @@
 	* inst/include/rspdlite: Adjusted
 	* src/formatter: Idem
 
+	* inst/include/rspdlite: Use explicit set_ and get_ prefixes for
+	level and name (as upstream does now)
+
 2026-05-21  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Expand on C++ usage options
