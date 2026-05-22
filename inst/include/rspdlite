@@ -39,27 +39,27 @@ namespace rspdlite {
 #endif
 
     template <typename... Args>
-    inline void trace(format_string_t<Args...> fmt, Args&&... args) {
+    inline void log_trace(format_string_t<Args...> fmt, Args&&... args) {
         logger.log(level::trace, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void debug(format_string_t<Args...> fmt, Args&&... args) {
+    inline void log_debug(format_string_t<Args...> fmt, Args&&... args) {
         logger.log(level::debug, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void info(format_string_t<Args...> fmt, Args&&... args) {
+    inline void log_info(format_string_t<Args...> fmt, Args&&... args) {
         logger.log(level::info, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void warn(format_string_t<Args...> fmt, Args&&... args) {
+    inline void log_warn(format_string_t<Args...> fmt, Args&&... args) {
         logger.log(level::warn, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void error(format_string_t<Args...> fmt, Args&&... args) {
+    inline void log_error(format_string_t<Args...> fmt, Args&&... args) {
         logger.log(level::err, fmt, std::forward<Args>(args)...);
     }
     template <typename... Args>
-    inline void critical(format_string_t<Args...> fmt, Args&&... args) {
+    inline void log_critical(format_string_t<Args...> fmt, Args&&... args) {
         logger.log(level::critical, fmt, std::forward<Args>(args)...);
     }
 

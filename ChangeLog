@@ -1,19 +1,24 @@
 2026-05-22  Dirk Eddelbuettel  <edd@debian.org>
 
-	* R/wrap.R: Logging 'verbs' are now prefixed with 'log_'
-	* NAMESPACE: Idem
-	* inst/tinytest/test_basics.R: Idem
-	* inst/tinytest/test_formats.R: Idem
-
-	* R/package.R: Remove erroneous '@internal' tag
-	* man/rspdlite-package.Rd: Regenerated
-
 	* inst/include/spdlite/: Synchronized with upstream
 	* inst/include/rspdlite: Adjusted
-	* src/formatter: Idem
+	* src/formatter.cpp: Idem
 
 	* inst/include/rspdlite: Use explicit set_ and get_ prefixes for
 	level and name (as upstream does now)
+
+	* R/wrap.R: Logging 'verbs' are now prefixed with 'log_', use 'set_'
+	and 'get_' for name and level
+	* NAMESPACE: Idem
+	* inst/tinytest/test_basics.R: Idem
+	* inst/tinytest/test_formats.R: Idem
+	* inst/include/rspdlite: Idem
+	* inst/examples/example.R: Idem
+	* inst/examples/example1.cpp: Idem
+	* inst/examples/example2.cpp: Idem
+
+	* R/package.R: Remove erroneous '@internal' tag
+	* man/rspdlite-package.Rd: Regenerated
 
 2026-05-21  Dirk Eddelbuettel  <edd@debian.org>
 
