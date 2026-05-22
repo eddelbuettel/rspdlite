@@ -22,22 +22,23 @@ concept log_sink = requires(T & s, const log_msg& m) {
     s.flush();
 };
 
-// Logger class. Formats log messages and forwards them to the sinks.
+// Logger class template. Use the `logger` / `logger_st` aliases below rather than
+// instantiating directly. Formats log messages and forwards them to the sinks.
 template <typename Mutex, typename... Sinks>
-class logger {
+class logger_impl {
 public:
-    explicit logger(std::string name, Sinks... sinks)
+    explicit logger_impl(std::string name, Sinks... sinks)
         : name_(std::move(name)),
           formatter_(name_),
           sinks_(std::move(sinks)...) {}
 
-    explicit logger(Sinks... sinks) requires(sizeof...(Sinks) > 0 && (log_sink<Sinks> && ...))
+    explicit logger_impl(Sinks... sinks) requires(sizeof...(Sinks) > 0 && (log_sink<Sinks> && ...))
         : formatter_(name_),
           sinks_(std::move(sinks)...) {}
 
-    logger() = default;
+    logger_impl() = default;
 
-    logger(logger&& other) noexcept
+    logger_impl(logger_impl&& other) noexcept
         : name_(std::move(other.name_)),
           level_(other.level_.load(std::memory_order_relaxed)),
           flush_level_(other.flush_level_.load(std::memory_order_relaxed)),
@@ -47,16 +48,16 @@ public:
         other.level_.store(level::off, std::memory_order_relaxed);
     }
 
-    logger& operator=(logger&&) = delete;
-    logger(const logger&) = delete;
-    logger& operator=(const logger&) = delete;
+    logger_impl& operator=(logger_impl&&) = delete;
+    logger_impl(const logger_impl&) = delete;
+    logger_impl& operator=(const logger_impl&) = delete;
 
     template <typename... Args>
     void log(level lvl, format_string_t<Args...> fmt, Args&&... args) const noexcept {
         if (should_log(lvl)) dispatch_fmt_(lvl, fmt, std::forward<Args>(args)...);
     }
 
-    void log(level lvl, string_view_t msg) const noexcept {
+    void log(level lvl, std::string_view msg) const noexcept {
         if (should_log(lvl)) log_sv_(lvl, msg);
     }
 
@@ -87,32 +88,33 @@ public:
     }
 
     // string_view overloads - no formatting, just header + payload
-    void trace(string_view_t msg) const noexcept { log(level::trace, msg); }
-    void debug(string_view_t msg) const noexcept { log(level::debug, msg); }
-    void info(string_view_t msg) const noexcept { log(level::info, msg); }
-    void warn(string_view_t msg) const noexcept { log(level::warn, msg); }
-    void error(string_view_t msg) const noexcept { log(level::err, msg); }
-    void critical(string_view_t msg) const noexcept { log(level::critical, msg); }
+    void trace(std::string_view msg) const noexcept { log(level::trace, msg); }
+    void debug(std::string_view msg) const noexcept { log(level::debug, msg); }
+    void info(std::string_view msg) const noexcept { log(level::info, msg); }
+    void warn(std::string_view msg) const noexcept { log(level::warn, msg); }
+    void error(std::string_view msg) const noexcept { log(level::err, msg); }
+    void critical(std::string_view msg) const noexcept { log(level::critical, msg); }
 
     [[nodiscard]] bool should_log(level msg_level) const noexcept { return msg_level >= level_.load(std::memory_order_relaxed); }
     [[nodiscard]] bool should_flush(level msg_level) const noexcept {
         return msg_level >= flush_level_.load(std::memory_order_relaxed);
     }
 
-    void log_level(level lvl) noexcept { level_.store(lvl, std::memory_order_relaxed); }
-    [[nodiscard]] level log_level() const noexcept { return level_.load(std::memory_order_relaxed); }
-    void flush_level(level lvl) noexcept { flush_level_.store(lvl, std::memory_order_relaxed); }
-    [[nodiscard]] level flush_level() const noexcept { return flush_level_.load(std::memory_order_relaxed); }
-    [[nodiscard]] const std::string& name() const noexcept { return name_; }
-    void name(const std::string& name) {
-        name_ = name;
-        formatter_.set_logger_name(name);
+    void set_log_level(level lvl) noexcept { level_.store(lvl, std::memory_order_relaxed); }
+    [[nodiscard]] level get_log_level() const noexcept { return level_.load(std::memory_order_relaxed); }
+    void set_flush_level(level lvl) noexcept { flush_level_.store(lvl, std::memory_order_relaxed); }
+    [[nodiscard]] level get_flush_level() const noexcept { return flush_level_.load(std::memory_order_relaxed); }
+    [[nodiscard]] std::string_view get_name() const noexcept { return name_; }
+    void set_name(std::string_view new_name) {
+        std::lock_guard<Mutex> lock(mutex_);
+        name_.assign(new_name);
+        formatter_.set_logger_name(name_);
     }
 
     // Reconfigure the cached header (UTC, show_date, show_millis). Cheap - one ctor call.
-    void format_options(format_options opts) {
+    void set_format_options(format_options opts) {
         std::lock_guard<Mutex> lock(mutex_);
-        formatter_ = simple_formatter{name_, opts};
+        formatter_ = formatter{name_, opts};
     }
 
     void flush() const noexcept {
@@ -122,15 +124,15 @@ public:
 
 private:
     std::string name_;
-    atomic_level_t level_{level::info};
-    atomic_level_t flush_level_{level::off};  // off => never auto-flush
+    detail::atomic_level_t level_{level::info};
+    detail::atomic_level_t flush_level_{level::off};  // off => never auto-flush
     mutable Mutex mutex_;
-    mutable simple_formatter formatter_;
+    mutable formatter formatter_;
     mutable memory_buf_t buf_;
     mutable std::tuple<Sinks...> sinks_;
 
     // string_view path - no formatting needed, just header + raw payload
-    void log_sv_(level lvl, string_view_t sv) const noexcept {
+    void log_sv_(level lvl, std::string_view sv) const noexcept {
         try {
             const auto now = log_clock::now();  // timestamp before lock for accuracy
             std::lock_guard<Mutex> lock(mutex_);
@@ -143,8 +145,8 @@ private:
             buf_.push_back('\r');
 #endif
             buf_.push_back('\n');
-            string_view_t formatted{buf_.data(), buf_.size()};
-            string_view_t payload{buf_.data() + payload_start, payload_end - payload_start};
+            std::string_view formatted{buf_.data(), buf_.size()};
+            std::string_view payload{buf_.data() + payload_start, payload_end - payload_start};
             log_msg msg(now, name_, lvl, formatted, payload, formatter_.level_offset());
             std::apply([&](auto&... s) { (s.write(msg), ...); }, sinks_);
             if (should_flush(lvl)) std::apply([](auto&... s) { (s.flush(), ...); }, sinks_);
@@ -186,8 +188,8 @@ private:
             buf_.push_back('\r');
 #endif
             buf_.push_back('\n');
-            string_view_t formatted{buf_.data(), buf_.size()};
-            string_view_t payload{buf_.data() + payload_start, payload_end - payload_start};
+            std::string_view formatted{buf_.data(), buf_.size()};
+            std::string_view payload{buf_.data() + payload_start, payload_end - payload_start};
             log_msg msg(now, name_, lvl, formatted, payload, formatter_.level_offset());
             std::apply([&](auto&... s) { (s.write(msg), ...); }, sinks_);
             if (should_flush(lvl)) std::apply([](auto&... s) { (s.flush(), ...); }, sinks_);
@@ -201,30 +203,65 @@ private:
     }
 };
 
-// logger_mt: thread-safe (std::mutex). Serializes format + dispatch per log call.
+// logger: thread-safe (std::mutex). Serializes format + dispatch per log call.
+// Default choice - prefer this unless you can prove the logger is never shared
+// across threads.
 template <typename... Sinks>
-class logger_mt : public logger<std::mutex, Sinks...> {
-    using base = logger<std::mutex, Sinks...>;
-
-public:
-    logger_mt() = default;
-    explicit logger_mt(std::string name, Sinks... sinks)
-        : base(std::move(name), std::move(sinks)...) {}
-    explicit logger_mt(Sinks... sinks) requires(sizeof...(Sinks) > 0 && (log_sink<Sinks> && ...))
-        : base(std::move(sinks)...) {}
-};
+using logger = logger_impl<std::mutex, Sinks...>;
 
 // logger_st: single-threaded (null_mutex). Zero locking overhead.
 template <typename... Sinks>
-class logger_st : public logger<null_mutex, Sinks...> {
-    using base = logger<null_mutex, Sinks...>;
-
-public:
-    logger_st() = default;
-    explicit logger_st(std::string name, Sinks... sinks)
-        : base(std::move(name), std::move(sinks)...) {}
-    explicit logger_st(Sinks... sinks) requires(sizeof...(Sinks) > 0 && (log_sink<Sinks> && ...))
-        : base(std::move(sinks)...) {}
-};
+using logger_st = logger_impl<detail::null_mutex, Sinks...>;
 
 }  // namespace spdlite
+
+// Compile-time level gate. Define SPDLITE_ACTIVE_LEVEL before including to strip
+// lower levels. Values match enum class level in common.h.
+
+#define SPDLITE_LEVEL_TRACE 0
+#define SPDLITE_LEVEL_DEBUG 1
+#define SPDLITE_LEVEL_INFO 2
+#define SPDLITE_LEVEL_WARN 3
+#define SPDLITE_LEVEL_ERROR 4
+#define SPDLITE_LEVEL_CRITICAL 5
+#define SPDLITE_LEVEL_OFF 6  // sentinel: silences every macro
+
+#ifndef SPDLITE_ACTIVE_LEVEL
+    #define SPDLITE_ACTIVE_LEVEL SPDLITE_LEVEL_TRACE
+#endif
+
+#if SPDLITE_ACTIVE_LEVEL <= SPDLITE_LEVEL_TRACE
+    #define SPDLITE_TRACE(logger, ...) (logger).trace(__VA_ARGS__)
+#else
+    #define SPDLITE_TRACE(logger, ...) (void)0
+#endif
+
+#if SPDLITE_ACTIVE_LEVEL <= SPDLITE_LEVEL_DEBUG
+    #define SPDLITE_DEBUG(logger, ...) (logger).debug(__VA_ARGS__)
+#else
+    #define SPDLITE_DEBUG(logger, ...) (void)0
+#endif
+
+#if SPDLITE_ACTIVE_LEVEL <= SPDLITE_LEVEL_INFO
+    #define SPDLITE_INFO(logger, ...) (logger).info(__VA_ARGS__)
+#else
+    #define SPDLITE_INFO(logger, ...) (void)0
+#endif
+
+#if SPDLITE_ACTIVE_LEVEL <= SPDLITE_LEVEL_WARN
+    #define SPDLITE_WARN(logger, ...) (logger).warn(__VA_ARGS__)
+#else
+    #define SPDLITE_WARN(logger, ...) (void)0
+#endif
+
+#if SPDLITE_ACTIVE_LEVEL <= SPDLITE_LEVEL_ERROR
+    #define SPDLITE_ERROR(logger, ...) (logger).error(__VA_ARGS__)
+#else
+    #define SPDLITE_ERROR(logger, ...) (void)0
+#endif
+
+#if SPDLITE_ACTIVE_LEVEL <= SPDLITE_LEVEL_CRITICAL
+    #define SPDLITE_CRITICAL(logger, ...) (logger).critical(__VA_ARGS__)
+#else
+    #define SPDLITE_CRITICAL(logger, ...) (void)0
+#endif
