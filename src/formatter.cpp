@@ -47,10 +47,10 @@ namespace rspdlite {
         void warn(std::string_view) {}
         void error(std::string_view) {}
         void critical(std::string_view) {}
-        void log_level(enum level) {}
-        enum level log_level() { return level::info; }
-        void name(std::string) {}
-        std::string name() { return std::string(); }
+        void set_log_level(enum level) {}
+        enum level get_log_level() { return level::info; }
+        void set_name(std::string) {}
+        std::string get_name() { return std::string(); }
     };
     dummy_logger logger;
 }
