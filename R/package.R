@@ -16,6 +16,4 @@
 #' its instance would be separate as it resides in a different shared library.
 #' Similarly, an ad-hoc compilation via e.g. \code{Rcpp::sourceCpp()} will lead
 #' to a distinct instance for the same reason.
-#'
-#' @keywords internal
 "_PACKAGE"

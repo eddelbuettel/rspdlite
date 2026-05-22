@@ -5,6 +5,9 @@
 	* inst/tinytest/test_basics.R: Idem
 	* inst/tinytest/test_formats.R: Idem
 
+	* R/package.R: Remove erroneous '@internal' tag
+	* man/rspdlite-package.Rd: Regenerated
+
 2026-05-21  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Expand on C++ usage options
