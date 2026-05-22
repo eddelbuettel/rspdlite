@@ -1,3 +1,10 @@
+2026-05-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/wrap.R: Logging 'verbs' are now prefixed with 'log_'
+	* NAMESPACE: Idem
+	* inst/tinytest/test_basics.R: Idem
+	* inst/tinytest/test_formats.R: Idem
+
 2026-05-21  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Expand on C++ usage options

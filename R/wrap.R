@@ -13,48 +13,48 @@
 ##' @param ... Supplementary arguments for the logging string
 ##' @return Nothing is returned from these functions (with the exception of
 ##' \code{get_level()}) as they are invoked for their side-effects.
-trace       <- function(s, ...)  trace_(fmt(s,...))
+log_trace   <- function(s, ...)  trace_(fmt(s,...))
 
-##' @rdname trace
-debug       <- function(s, ...)  debug_(fmt(s,...))
+##' @rdname log_trace
+log_debug   <- function(s, ...)  debug_(fmt(s,...))
 
-##' @rdname trace
-info        <- function(s, ...)  info_(fmt(s,...))
+##' @rdname log_trace
+log_info    <- function(s, ...)  info_(fmt(s,...))
 
-##' @rdname trace
-warn        <- function(s, ...)  warn_(fmt(s,...))
+##' @rdname log_trace
+log_warn    <- function(s, ...)  warn_(fmt(s,...))
 
-##' @rdname trace
-error       <- function(s, ...)  error_(fmt(s,...))
+##' @rdname log_trace
+log_error   <- function(s, ...)  error_(fmt(s,...))
 
-##' @rdname trace
-critical    <- function(s, ...)  critical_(fmt(s,...))
+##' @rdname log_trace
+log_critical<- function(s, ...)  critical_(fmt(s,...))
 
-##' @rdname trace
+##' @rdname log_trace
 set_level   <- function(level)  set_level_(level)
 
-##' @rdname trace
+##' @rdname log_trace
 get_level   <- function()       get_level_()
 
-##' @rdname trace
+##' @rdname log_trace
 set_name   <- function(s)       set_name_(s)
 
-##' @rdname trace
+##' @rdname log_trace
 get_name   <- function()        get_name_()
 
-##' @rdname trace
+##' @rdname log_trace
 set_precision <- function(precision)    set_precision_(precision)
 
-##' @rdname trace
+##' @rdname log_trace
 show_thread_id <- function(show_thread_id = TRUE) show_thread_id_(show_thread_id)
 
-##' @rdname trace
+##' @rdname log_trace
 show_date <- function(show_date = TRUE) show_date_(show_date)
 
-##' @rdname trace
+##' @rdname log_trace
 show_utc <- function(utc = TRUE) show_utc_(utc)
 
-##' @rdname trace
+##' @rdname log_trace
 set_format <- function(utc = FALSE,
                        show_date = TRUE,
                        show_thread_id = FALSE,
