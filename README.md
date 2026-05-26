@@ -29,9 +29,9 @@ logging messages can be selected at compile time.
 
 #### From C++
 
-As seen in [examples/example1.cpp][ex1] and [examples/example2.cpp][ex2] we can use the same C++
-example from the [spdlite][spdlite] docs, either directly accessing an instantiated `logger` object
-as in the first example
+As seen in file [examples/example.cpp][ex] we can use the same C++ example from the
+[spdlite][spdlite] docs, either directly accessing an instantiated `logger` object as in the first
+example
 
 ```c++
 // Direct use of the logger object as in the upstream docs
@@ -61,7 +61,7 @@ rspdlite::log_info("{:<30}", "left aligned");
 ```
 
 The default logging level is 'info' so all these message appear by default. As seen in
-[examples/example2.cpp][ex2] we can also alter the logging level dynamically to show more (or fewer)
+[examples/example.cpp][ex] we can also alter the logging level dynamically to show more (or fewer)
 messages.
 
 By using a `#define` also supplying a filename, we can (at compile-time) select a 'file sink'. (There
@@ -143,6 +143,5 @@ offered as an alternative to the C++20 library `std::format`.
 [spdlite]: https://github.com/gabime/spdlite
 [fmt]: https://github.com/fmtlib/fmt
 [rspdlite]: https://github.com/eddelbuettel/rspdlite
-[ex1]: inst/examples/example1.cpp
-[ex2]: inst/examples/example2.cpp
+[ex]: inst/examples/example.cpp
 [exR]: inst/examples/example.R

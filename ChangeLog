@@ -1,6 +1,7 @@
 2026-05-26  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/examples/example.cpp: Consolidate examples into one file
+	* README.md: Adjust example path
 
 2026-05-22  Dirk Eddelbuettel  <edd@debian.org>
 
