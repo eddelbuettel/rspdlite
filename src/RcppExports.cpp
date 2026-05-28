@@ -10,15 +10,15 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// formatter
-std::string formatter(const std::string s, std::vector<std::string> v);
-RcppExport SEXP _rspdlite_formatter(SEXP sSEXP, SEXP vSEXP) {
+// formatter_
+std::string formatter_(const std::string s, std::vector<std::string> v);
+RcppExport SEXP _rspdlite_formatter_(SEXP sSEXP, SEXP vSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string >::type s(sSEXP);
     Rcpp::traits::input_parameter< std::vector<std::string> >::type v(vSEXP);
-    rcpp_result_gen = Rcpp::wrap(formatter(s, v));
+    rcpp_result_gen = Rcpp::wrap(formatter_(s, v));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -187,7 +187,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rspdlite_formatter", (DL_FUNC) &_rspdlite_formatter, 2},
+    {"_rspdlite_formatter_", (DL_FUNC) &_rspdlite_formatter_, 2},
     {"_rspdlite_trace_", (DL_FUNC) &_rspdlite_trace_, 1},
     {"_rspdlite_debug_", (DL_FUNC) &_rspdlite_debug_, 1},
     {"_rspdlite_info_", (DL_FUNC) &_rspdlite_info_, 1},

@@ -1,3 +1,11 @@
+2026-05-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/formatter.cpp (formatter_): Renamed, more explicitly internal
+	* man/formatter.Rd: Removed
+	* R/wrap.R: Updated
+	* src/RcppExports.cpp: Regenerated
+	* R/RcppExports.R: Idem
+
 2026-05-26  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/examples/example.cpp: Consolidate examples into one file

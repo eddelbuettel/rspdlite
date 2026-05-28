@@ -66,5 +66,5 @@ fmt <- function(s, ...) {
     n <- ...length()
     v <- character(n)
     for (i in seq_len(n)) v[i] <- format(...elt(i)[1])
-    formatter(s, v)
+    formatter_(s, v)
 }

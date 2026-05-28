@@ -62,7 +62,7 @@ void set_format_(const bool, const bool, const bool, const std::string&) { }
 
 #endif
 
-//' Simple Pass-Through Formatter to \code{fmt::format()}
+//' (Internal) Simple Pass-Through Forwarder to \code{fmt::format()}
 //'
 //' The C-level interface of R does not make it easy to pass \code{...}  arguments.
 //' This helper function assumes it has already been called with \code{format()}
@@ -78,8 +78,9 @@ void set_format_(const bool, const bool, const bool, const std::string&) { }
 //' @param v A character vector with the logging string arguments.
 //' @return A single (formatted) string
 //' @seealso https://github.com/fmtlib/fmt
+//' @noRd
 // [[Rcpp::export]]
-std::string formatter(const std::string s, std::vector<std::string> v) {
+std::string formatter_(const std::string s, std::vector<std::string> v) {
     if (v.size() > max_args)
         Rcpp::warning("Only up to " + std::to_string(max_args) + " arguments support for now.");
     return forward_to_format(s, v);
