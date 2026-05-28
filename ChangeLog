@@ -1,5 +1,6 @@
 2026-05-28  Dirk Eddelbuettel  <edd@debian.org>
 
+	* inst/include/rspdlite: Moved some code from src/
 	* src/formatter.cpp (formatter_): Renamed, more explicitly internal
 	* man/formatter.Rd: Removed
 	* R/wrap.R: Updated

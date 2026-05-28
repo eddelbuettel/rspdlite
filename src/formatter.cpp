@@ -2,65 +2,7 @@
 // add ', cpp' for callable interface
 // [[Rcpp::interfaces(r)]]
 
-// In order to survive on CRAN, we have to cope with non-C++20 compilation
-#if  __cplusplus >= 202002L
-
 #include <rspdlite>
-
-constexpr int max_args = 15;            // Arbitrary but 'smallish'
-
-template<class... Args>
-std::string forward_to_format(const std::string s,
-                              const std::vector<std::string>& v,
-                              const Args... args) {
-    if (v.size() == sizeof...(args)) {
-#if defined(SPDLITE_USE_STD_FORMAT) && __cplusplus >= 202002L
-        return std::vformat(std::string_view(s), std::make_format_args(args...));
-#elif __cplusplus >= 202002L
-        return fmt::format(fmt::runtime(s), args...);
-#else
-        #error "Compiling spdlite requires C++20"
-#endif
-    }
-    if constexpr(sizeof...(args) < max_args) {
-        return forward_to_format(s, v, args..., v[sizeof...(args)]);
-    }
-    return std::string(""); // not reached
-}
-
-#else
-
-#include <Rcpp/Lighter>
-constexpr int max_args = 15;            // Arbitrary but 'smallish'
-enum class level : int { off = 0, on = 1, info = 2 };
-std::string forward_to_format(const std::string, const std::vector<std::string>&) {
-    Rcpp::message(Rcpp::wrap("No spdlite support without C++20. Sorry."));
-    return std::string("");
-}
-namespace rspdlite {
-    enum level stringToLevel(std::string) { return level::info; }
-    std::string levelToString(enum level) { return std::string("info"); }
-    struct dummy_logger {
-        void trace(std::string_view) {}
-        void debug(std::string_view) {}
-        void info(std::string_view) {}
-        void warn(std::string_view) {}
-        void error(std::string_view) {}
-        void critical(std::string_view) {}
-        void set_log_level(enum level) {}
-        enum level get_log_level() { return level::info; }
-        void set_name(std::string) {}
-        std::string get_name() { return std::string(); }
-    };
-    dummy_logger logger;
-}
-void set_precision_(const std::string&) { }
-void show_thread_id_(const bool) { }
-void show_date_(const bool) { }
-void show_utc_(const bool) { }
-void set_format_(const bool, const bool, const bool, const std::string&) { }
-
-#endif
 
 //' (Internal) Simple Pass-Through Forwarder to \code{fmt::format()}
 //'
