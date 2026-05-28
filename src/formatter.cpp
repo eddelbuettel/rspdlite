@@ -85,6 +85,14 @@ void set_format_(const bool utc, const bool show_date, const bool show_thread_id
         });
 }
 
+#else
+
+void set_precision_(const std::string&) { }
+void show_thread_id_(const bool) { }
+void show_date_(const bool) { }
+void show_utc_(const bool) { }
+void set_format_(const bool, const bool, const bool, const std::string&) { }
+
 #endif
 
 // [[Rcpp::export]]

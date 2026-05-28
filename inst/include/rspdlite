@@ -1,6 +1,8 @@
 // -*- mode: c++; -*-
 
 #include <Rcpp/Lighter>         		// for Rcpp
+
+#if  __cplusplus >= 202002L
 #include <spdlite/logger.h>     		// for spdlite
 #if defined(RSPDLITE_NULL_SINK)
 #include <spdlite/sinks/null_sink.h>      	// for null_sink, if used
@@ -8,7 +10,7 @@
 #if defined(RSPDLITE_FILE_SINK)
 #include <spdlite/sinks/file_sink.h>      	// for file_sink, if used
 #endif
-
+#endif
 
 constexpr int max_args = 15;            	// Arbitrary but 'smallish', ends recursion
 
@@ -61,14 +63,11 @@ namespace rspdlite {
     };
     dummy_logger logger;
 }
-inline void set_precision_(const std::string&) { }
-inline void show_thread_id_(const bool) { }
-inline void show_date_(const bool) { }
-inline void show_utc_(const bool) { }
-inline void set_format_(const bool, const bool, const bool, const std::string&) { }
 
 #endif
 
+
+#if  __cplusplus >= 202002L
 
 // Very minimal sink for R, in the rspdlite namespace of the package
 namespace rspdlite {
@@ -177,3 +176,5 @@ namespace rspdlite {
    inline void        set_name(const std::string& s) { logger.set_name(s);       }
    inline std::string get_name()                     { return std::string(logger.get_name()); }
 }
+
+#endif
