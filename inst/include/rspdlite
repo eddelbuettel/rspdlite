@@ -1,79 +1,53 @@
 // -*- mode: c++; -*-
 
-#include <Rcpp/Lighter>         		// for Rcpp
-
-#if  __cplusplus >= 202002L
-#include <spdlite/logger.h>     		// for spdlite
-#if defined(RSPDLITE_NULL_SINK)
-#include <spdlite/sinks/null_sink.h>      	// for null_sink, if used
-#endif
-#if defined(RSPDLITE_FILE_SINK)
-#include <spdlite/sinks/file_sink.h>      	// for file_sink, if used
-#endif
-#endif
-
-constexpr int max_args = 15;            	// Arbitrary but 'smallish', ends recursion
-
+#include <Rcpp/Lighter>
 
 // In order to survive on CRAN, we have to cope with non-C++20 compilation
 #if  __cplusplus >= 202002L
 
-template<class... Args>
-inline std::string forward_to_format(const std::string s,
-                                     const std::vector<std::string>& v,
-                                     const Args... args) {
-    if (v.size() == sizeof...(args)) {
-#if defined(SPDLITE_USE_STD_FORMAT) && __cplusplus >= 202002L
-        return std::vformat(std::string_view(s), std::make_format_args(args...));
-#elif __cplusplus >= 202002L
-        return fmt::format(fmt::runtime(s), args...);
-#else
-        #error "Compiling spdlite requires C++20"
+#include <spdlite/logger.h>     		// for spdlite
+#if defined(RSPDLITE_NULL_SINK)
+    #include <spdlite/sinks/null_sink.h>      	// for null_sink, if used
 #endif
-    }
-    if constexpr(sizeof...(args) < max_args) {
-        return forward_to_format(s, v, args..., v[sizeof...(args)]);
-    }
-    return std::string(""); // not reached
-}
-
-#else
-
-#include <Rcpp/Lighter>
-
-enum class level : int { off = 0, on = 1, info = 2 };
-inline std::string forward_to_format(const std::string, const std::vector<std::string>&) {
-    Rcpp::message(Rcpp::wrap("No spdlite support without C++20. Sorry."));
-    return std::string("");
-}
-namespace rspdlite {
-    enum level stringToLevel(std::string) { return level::info; }
-    inline std::string levelToString(enum level) { return std::string("info"); }
-    struct dummy_logger {
-        void trace(std::string_view) {}
-        void debug(std::string_view) {}
-        void info(std::string_view) {}
-        void warn(std::string_view) {}
-        void error(std::string_view) {}
-        void critical(std::string_view) {}
-        void set_log_level(enum level) {}
-        enum level get_log_level() { return level::info; }
-        void set_name(std::string) {}
-        std::string get_name() { return std::string(); }
-    };
-    dummy_logger logger;
-}
-
+#if defined(RSPDLITE_FILE_SINK)
+    #include <spdlite/sinks/file_sink.h>      	// for file_sink, if used
 #endif
 
-
-#if  __cplusplus >= 202002L
-
-// Very minimal sink for R, in the rspdlite namespace of the package
 namespace rspdlite {
 
     using namespace spdlite;
 
+    constexpr int max_args = 15;            	// Arbitrary but 'smallish', ends recursion
+
+    // Recursively convert a vector of strings (a constraint we have for the R interface based
+    // on its SEXP types and the .Call() API) to variadic args use to call the formatter. We
+    // dispatch either to the C++20 std::format (as an opt-in) or use fmt::format as the default
+    // just like spdlite does.
+    template<class... Args>
+    inline std::string forward_to_format(const std::string s,
+                                         const std::vector<std::string>& v,
+                                         const Args... args) {
+        // Once all vector arguments are in Args, call format(); maximum size is checked
+        // and enforced by caller formatter_() in src/formatter.cpp
+        if (v.size() == sizeof...(args)) {
+            #if defined(SPDLITE_USE_STD_FORMAT) && __cplusplus >= 202002L
+                return std::vformat(std::string_view(s), std::make_format_args(args...));
+            #elif __cplusplus >= 202002L
+                return fmt::format(fmt::runtime(s), args...);
+            #else
+                #error "Compiling spdlite requires C++20"
+            #endif
+        }
+        // If not all args used loop, recursively loop from first (with index zero) to last (with
+        // index sizeof(args)) with "loop termination" when the preceding condition hits
+        if constexpr(sizeof...(args) < max_args) {
+            return forward_to_format(s, v, args..., v[sizeof...(args)]);
+        }
+        return std::string(""); // not reached
+    }
+
+
+    // Very minimal sink for R, in the rspdlite namespace of the package
     struct r_sink {
         explicit r_sink() {}
         void write(const log_msg &msg) {
@@ -84,19 +58,19 @@ namespace rspdlite {
         }
     };
 
-// double quoting trick to get content instead of macro when quoting macro for filename
-#if defined(RSPDLITE_NULL_SINK)
-    inline spdlite::logger_st logger(spdlite::null_sink{}); // select null sink
-#elif defined(RSPDLITE_FILE_SINK)
-#define Q(x) #x
-#define QUOTE(x) Q(x)
-    constexpr char* filename = QUOTE(RSPDLITE_FILE_SINK);
-    inline spdlite::logger_st logger(spdlite::file_sink{filename, true});
-#undef Q
-#undef QUOTE
-#else
-    inline spdlite::logger_st logger(rspdlite::r_sink{}); // instead of spdlite::console_sink{});
-#endif
+    // double quoting trick to get content instead of macro when quoting macro for filename
+    #if defined(RSPDLITE_NULL_SINK)
+        inline spdlite::logger_st logger(spdlite::null_sink{}); // select null sink
+    #elif defined(RSPDLITE_FILE_SINK)
+        #define Q(x) #x
+        #define QUOTE(x) Q(x)
+        constexpr char* filename = QUOTE(RSPDLITE_FILE_SINK);
+        inline spdlite::logger_st logger(spdlite::file_sink{filename, true});
+        #undef Q
+        #undef QUOTE
+    #else
+        inline spdlite::logger_st logger(rspdlite::r_sink{}); // default sink for R
+    #endif
 
     template <typename... Args>
     inline void log_trace(format_string_t<Args...> fmt, Args&&... args) {
@@ -177,4 +151,30 @@ namespace rspdlite {
    inline std::string get_name()                     { return std::string(logger.get_name()); }
 }
 
+
+#else
+    // C++17 and below fallback to permit compilation
+    namespace rspdlite {
+        constexpr int max_args = 15;            	// Arbitrary but 'smallish', ends recursion
+        enum class level : int { off = 0, on = 1, info = 2 };
+        inline std::string forward_to_format(const std::string, const std::vector<std::string>&) {
+             Rcpp::message(Rcpp::wrap("No spdlite support without C++20. Sorry."));
+             return std::string("");
+        }
+        enum level stringToLevel(std::string) { return level::info; }
+        inline std::string levelToString(enum level) { return std::string("info"); }
+        struct dummy_logger {
+            void trace(std::string_view) {}
+            void debug(std::string_view) {}
+            void info(std::string_view) {}
+            void warn(std::string_view) {}
+            void error(std::string_view) {}
+            void critical(std::string_view) {}
+            void set_log_level(enum level) {}
+            enum level get_log_level() { return level::info; }
+            void set_name(std::string) {}
+            std::string get_name() { return std::string(); }
+        };
+        dummy_logger logger;
+    }
 #endif

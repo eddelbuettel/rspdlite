@@ -23,9 +23,11 @@
 //' @noRd
 // [[Rcpp::export]]
 std::string formatter_(const std::string s, std::vector<std::string> v) {
-    if (v.size() > max_args)
-        Rcpp::warning("Only up to " + std::to_string(max_args) + " arguments support for now.");
-    return forward_to_format(s, v);
+    if (v.size() > rspdlite::max_args) {
+        Rcpp::stop("Only up to " + std::to_string(rspdlite::max_args) +
+                   " arguments supported.");
+    }
+    return rspdlite::forward_to_format(s, v);
 }
 
 // [[Rcpp::export]]
