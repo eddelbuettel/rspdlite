@@ -147,8 +147,11 @@ namespace rspdlite {
         return time_precision::none; // not reached
    }
 
-   inline void        set_name(const std::string& s) { logger.set_name(s);       }
-   inline std::string get_name()                     { return std::string(logger.get_name()); }
+   inline void        set_level(const std::string& s) { logger.set_log_level(stringToLevel(s));      }
+   inline std::string get_level()                     { return levelToString(logger.get_log_level(); }
+
+   inline void        set_name(const std::string& s) { logger.set_name(s);                           }
+   inline std::string get_name()                     { return std::string(logger.get_name());        }
 }
 
 
@@ -161,19 +164,21 @@ namespace rspdlite {
              Rcpp::message(Rcpp::wrap("No spdlite support without C++20. Sorry."));
              return std::string("");
         }
-        enum level stringToLevel(std::string) { return level::info; }
+        inline enum level stringToLevel(std::string) { return level::info; }
         inline std::string levelToString(enum level) { return std::string("info"); }
         struct dummy_logger {
-            void trace(std::string_view) {}
-            void debug(std::string_view) {}
-            void info(std::string_view) {}
-            void warn(std::string_view) {}
-            void error(std::string_view) {}
-            void critical(std::string_view) {}
-            void set_log_level(enum level) {}
-            enum level get_log_level() { return level::info; }
-            void set_name(std::string) {}
-            std::string get_name() { return std::string(); }
+            inline void trace(std::string_view) {}
+            inline void debug(std::string_view) {}
+            inline void info(std::string_view) {}
+            inline void warn(std::string_view) {}
+            inline void error(std::string_view) {}
+            inline void critical(std::string_view) {}
+            inline void set_log_level(enum level) {}
+            inline enum level get_log_level() { return level::info; }
+            inline void set_level(std::string) {}
+            inline std::string get_level() { return std::string(); }
+            inline void set_name(std::string) {}
+            inline std::string get_name() { return std::string(); }
         };
         dummy_logger logger;
     }

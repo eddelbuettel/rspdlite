@@ -1,6 +1,7 @@
 2026-05-30  Dirk Eddelbuettel  <edd@debian.org>
 
-	* inst/include/rspdlite: Minor rearrangments, added comments
+	* inst/include/rspdlite: Minor rearrangments, added comments, add
+	level setter and getter
 	* src/formatter.cpp (formatter_): Size mismatch is now an error
 	* src/RcppExports.cpp: Regenerated
 	* R/RcppExports.R: Idem
