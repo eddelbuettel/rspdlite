@@ -1,7 +1,7 @@
 2026-05-30  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/rspdlite: Minor rearrangments, added comments, add
-	level setter and getter
+	level setter and getter from / to string
 	* src/formatter.cpp (formatter_): Size mismatch is now an error
 	* src/RcppExports.cpp: Regenerated
 	* R/RcppExports.R: Idem

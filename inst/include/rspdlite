@@ -97,9 +97,9 @@ namespace rspdlite {
         logger.log(level::critical, fmt, std::forward<Args>(args)...);
     }
 
-    inline void set_level(level lvl) { logger.set_log_level(lvl); }
+    inline void set_log_level(level lvl) { logger.set_log_level(lvl); }
 
-    inline enum level get_level() { return logger.get_log_level(); }
+    inline enum level get_log_level() { return logger.get_log_level(); }
 
     inline const char* levelToString(enum level lvl) {
         static constexpr std::array<const char*, 8> names = {
@@ -147,11 +147,12 @@ namespace rspdlite {
         return time_precision::none; // not reached
    }
 
-   inline void        set_level(const std::string& s) { logger.set_log_level(stringToLevel(s));      }
-   inline std::string get_level()                     { return levelToString(logger.get_log_level(); }
+   // also see pair of setter / getter above using 'enum level'
+   inline void        set_level(const std::string& s) { logger.set_log_level(stringToLevel(s));       }
+   inline std::string get_level()                     { return levelToString(logger.get_log_level()); }
 
-   inline void        set_name(const std::string& s) { logger.set_name(s);                           }
-   inline std::string get_name()                     { return std::string(logger.get_name());        }
+   inline void        set_name(const std::string& s) { logger.set_name(s);                            }
+   inline std::string get_name()                     { return std::string(logger.get_name());         }
 }
 
 
