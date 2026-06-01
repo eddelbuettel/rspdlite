@@ -1,5 +1,8 @@
 2026-06-01  Dirk Eddelbuettel  <edd@debian.org>
 
+	* R/wrap.R: Expanded manual page
+	* man/trace.Rd: Regenerated
+
 	* README.md: Mention tl package as thinner shim
 
 2026-05-30  Dirk Eddelbuettel  <edd@debian.org>
@@ -42,6 +45,7 @@
 	* inst/examples/example.R: Idem
 	* inst/examples/example1.cpp: Idem
 	* inst/examples/example2.cpp: Idem
+	* man/log_trace: Idem, also renamed
 
 	* R/package.R: Remove erroneous '@internal' tag
 	* man/rspdlite-package.Rd: Regenerated

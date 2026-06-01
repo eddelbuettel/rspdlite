@@ -16,7 +16,7 @@
 \alias{show_date}
 \alias{show_utc}
 \alias{set_format}
-\title{Convenience Wrappers for 'spdlite' Logging}
+\title{Logging wrappers for 'spdlite' logging from both R and C++}
 \usage{
 log_trace(s, ...)
 
@@ -71,5 +71,37 @@ Nothing is returned from these functions (with the exception of
 \code{get_level()}) as they are invoked for their side-effects.
 }
 \description{
-Several short wrappers for functions from 'spdlite' are provided as a convenience.
+Several wrappers for functions from 'spdlite' are provided as a
+convenience. In general, these can be accessed both from C++ (via the
+provided C++20 header), and from R via the functions documented here
+allowing for consitent logging throughout a package.
+}
+\details{
+Logging functions respect a global logging level that defaults to \sQuote{info}
+(meaning that calls to \code{log_trace} or \code{log_debug} are ignored).
+Several formatting options are available as well to control the number of digits
+on the timestamp, whether or not the thread id is displayed, whether the date
+portion of the timestamp is to be displayed and whether the display is in local
+time (the default) or in UTC.
+
+The C++ functionality is illustrated in the example file in the \code{examples}
+directory.
+}
+\examples{
+lvl <- rspdlite::get_level()
+rspdlite::log_debug("This message is ignored by the default level 'info'.")
+rspdlite::log_info("This message is show by the default level.")
+rspdlite::set_level("warn")
+rspdlite::log_info("Now this message at 'info' is ignored too.")
+rspdlite::log_warn("A warning messages passes at level warning. {}", 42L)
+rspdlite::set_name("my_logger")
+rspdlite::log_error("Error messages also pass, and see the name set")
+rspdlite::set_format(show_thread_id=TRUE, precision="ns")
+rspdlite::log_error("Warning message under changed formatting")
+rspdlite::set_level(lvl) # revert to prior level
+rspdlite::set_name("") # revert to no name
+rspdlite::set_format() # revert to default format
+}
+\author{
+Dirk Eddelbuettel
 }
