@@ -1,3 +1,7 @@
+2026-06-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Mention tl package as thinner shim
+
 2026-05-30  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/rspdlite: Minor rearrangments, added comments, add

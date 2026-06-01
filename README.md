@@ -38,7 +38,7 @@ example
 rspdlite::logger.info("Welcome to spdlog!");
 rspdlite::logger.error("Some error message with arg: {}", 1);
 rspdlite::logger.warn("Easy padding in numbers like {:08d}", 12);
-rspdlite::logger.critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
+rspdlite::logger.critical("Support for int: {0:d}; hex: {0:x}; oct: {0:o}; bin: {0:b}", 42);
 rspdlite::logger.info("Support for floats {:03.2f}", 1.23456);
 rspdlite::logger.info("Positional args are {1} {0}..", "too", "supported");
 rspdlite::logger.info("{:<30}", "left aligned");
@@ -54,7 +54,7 @@ rspdlite::set_level(spdlite::level::warn);
 rspdlite::log_info("Some more");
 rspdlite::log_error("Some error message with arg: {}", 1);
 rspdlite::log_warn("Easy padding in numbers like {:08d}", 12);
-rspdlite::log_critical("Support for int: {0:d};  hex: {0:x};  oct: {0:o}; bin: {0:b}", 42);
+rspdlite::log_critical("Support for int: {0:d}; hex: {0:x}; oct: {0:o}; bin: {0:b}", 42);
 rspdlite::log_info("Support for floats {:03.2f}", 1.23456);
 rspdlite::log_info("Positional args are {1} {0}..", "too", "supported");
 rspdlite::log_info("{:<30}", "left aligned");
@@ -90,7 +90,7 @@ rspdlite::log_critical("-- level to error and calling example1 and example2")
 rspdlite::set_level("error")
 ```
 
-Like its cousing R packages, the format string here 'resembles' the full C++ format string, but
+As for its cousin R packages, the format string here 'resembles' the full C++ format string, but
 remains simpler. As we convert each argument directly to a character (then passed on to the C++
 layer) we do not offer the extra formatting options available directly from C++. We have not found
 this to be an issue.
@@ -121,6 +121,13 @@ or the rotating sink we do not (yet ?) expose---or the fact that from C++ it is 
 instantiate multiple sinks (!!) or b) easily create multiple loggers at different levels or
 configurations. The [spdlite][spdlite] documentation has of course more on this.
 
+### Alternative Interface
+
+The [tl][tl] package offers a thin shim permitting more compact access from R
+and C++ via its shorter namespace and shorter function names offering
+e.g. `tl::debug("Notice")` from both R and C++ with the same formatting
+options as [rspdlite][rspdlite] which is used under its hood.
+
 ### Author
 
 [Gabi Melman](https://github.com/gabime) is the main author of both [spdlog][spdlog] and
@@ -145,3 +152,4 @@ offered as an alternative to the C++20 library `std::format`.
 [rspdlite]: https://github.com/eddelbuettel/rspdlite
 [ex]: inst/examples/example.cpp
 [exR]: inst/examples/example.R
+[tl]: https://github.com/eddelbuettel/tl
