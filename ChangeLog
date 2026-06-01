@@ -5,6 +5,8 @@
 
 	* README.md: Mention tl package as thinner shim
 
+	* inst/include/spdlite/: Minor synchronization with upstream
+
 2026-05-30  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/rspdlite: Minor rearrangments, added comments, add
