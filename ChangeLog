@@ -7,6 +7,9 @@
 
 	* inst/include/spdlite/: Minor synchronization with upstream
 
+	* inst/include/spdlite/formatter.h: Add missing sys/syscall.h header
+	needed by g++-16, also forwarded upstream as PR
+
 2026-05-30  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/rspdlite: Minor rearrangments, added comments, add
