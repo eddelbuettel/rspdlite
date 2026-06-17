@@ -2,13 +2,10 @@
 
 [![CI](https://github.com/eddelbuettel/rspdlite/actions/workflows/ci.yaml/badge.svg)](https://github.com/eddelbuettel/rspdlite/actions/workflows/ci.yaml)
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](https://www.r-project.org/Licenses/GPL-2)
+[![CRAN](https://www.r-pkg.org/badges/version/RcppSpdlog)](https://cran.r-project.org/package=RcppSpdlog)
+[![Dependencies](https://tinyverse.netlify.app/badge/RcppSpdlog)](https://cran.r-project.org/package=RcppSpdlog)
 [![r-universe](https://eddelbuettel.r-universe.dev/badges/rspdlite)](https://eddelbuettel.r-universe.dev/rspdlite)
 [![Last Commit](https://img.shields.io/github/last-commit/eddelbuettel/rspdlite)](https://github.com/eddelbuettel/rspdlite)
-
-<!-- [![CRAN](https://www.r-pkg.org/badges/version/RcppSpdlog)](https://cran.r-project.org/package=RcppSpdlog) -->
-<!-- [![Dependencies](https://tinyverse.netlify.app/badge/RcppSpdlog)](https://cran.r-project.org/package=RcppSpdlog) -->
-<!-- [![Downloads](https://cranlogs.r-pkg.org/badges/RcppSpdlog?color=brightgreen)](https://www.r-pkg.org/pkg/RcppSpdlog) -->
-
 
 ### About
 
@@ -45,7 +42,7 @@ rspdlite::logger.info("{:<30}", "left aligned");
 ```
 
 or, preferably, by using a level of indirection we added as shown in the second example (of which
-just show the first half)
+we just show the first half)
 
 ```c++
 rspdlite::log_critical("-- level to warn");
