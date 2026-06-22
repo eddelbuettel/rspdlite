@@ -2,8 +2,8 @@
 
 [![CI](https://github.com/eddelbuettel/rspdlite/actions/workflows/ci.yaml/badge.svg)](https://github.com/eddelbuettel/rspdlite/actions/workflows/ci.yaml)
 [![License](https://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](https://www.r-project.org/Licenses/GPL-2)
-[![CRAN](https://www.r-pkg.org/badges/version/RcppSpdlog)](https://cran.r-project.org/package=RcppSpdlog)
-[![Dependencies](https://tinyverse.netlify.app/badge/RcppSpdlog)](https://cran.r-project.org/package=RcppSpdlog)
+[![CRAN](https://www.r-pkg.org/badges/version/rspdlite)](https://cran.r-project.org/package=rspdlite)
+[![Dependencies](https://tinyverse.netlify.app/badge/rspdlite)](https://cran.r-project.org/package=rspdlite)
 [![r-universe](https://eddelbuettel.r-universe.dev/badges/rspdlite)](https://eddelbuettel.r-universe.dev/rspdlite)
 [![Last Commit](https://img.shields.io/github/last-commit/eddelbuettel/rspdlite)](https://github.com/eddelbuettel/rspdlite)
 
