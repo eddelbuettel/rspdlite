@@ -64,8 +64,8 @@ namespace rspdlite {
     #elif defined(RSPDLITE_FILE_SINK)
         #define Q(x) #x
         #define QUOTE(x) Q(x)
-        constexpr char* filename = QUOTE(RSPDLITE_FILE_SINK);
-        inline spdlite::logger_st logger(spdlite::file_sink{filename, true});
+        const std::filesystem::path filename = QUOTE(RSPDLITE_FILE_SINK);
+        inline spdlite::logger_st logger(spdlite::file_sink{filename, spdlite::open_mode::append});
         #undef Q
         #undef QUOTE
     #else

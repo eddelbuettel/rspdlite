@@ -1,3 +1,7 @@
+2026-06-28  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/rspdlite: Update conditional file sink declaration
+
 2026-06-22  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Correct two badges
